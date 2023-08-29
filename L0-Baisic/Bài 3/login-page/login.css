@@ -1,0 +1,116 @@
+@import url("../index.css");
+
+.container:not(.container--index){
+    background: rgba(0, 0, 0, 0.6);
+}
+
+.modal{
+    background-color: white;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8);
+}
+
+.modal__btn-exit{
+    color: darkgrey;
+    position: absolute;
+    font-size: 1.2rem;
+    top: calc(50px/2 - 0.5em);
+    right: calc(50px/2 - 0.5em);
+}
+
+.modal__title{
+    margin-top: 50px;
+    font-size: 24px;
+    font-weight: 500;
+}
+
+.modal__form{
+    padding: 30px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    align-items: center;
+    position: relative;
+}
+
+.modal__input{
+    border: 2px solid darkgrey;
+    padding: 8px 12px;
+    border-radius: 2px;
+    position: relative;
+}
+
+.modal__input > .btn--show-password{
+    position: absolute;
+    font-size: 1.2rem;
+    right: 12px;
+    border-radius: 100%;
+}
+
+.modal__input > .btn--show-password:focus-visible{
+    outline: none;
+}
+
+.modal__input--error{
+    border: 2px solid red;
+}
+
+.modal__input > input {
+    width: 240px;
+    border: none;
+}
+
+.modal__input:focus-within{
+    border: none;
+    outline: 4px solid lightblue;
+}
+
+.modal__input >input:focus{
+    outline: none;
+    margin-left: 4px;
+}
+
+.modal__status{
+    color: red;
+    font-size: 12px;
+    position: absolute;
+    bottom: -18px;
+    left: 0;
+}
+
+.modal__submit{
+    width: 100%;
+    font-size: 18px;
+    padding: 8px 12px;
+    border-radius: 2px;
+    background-color: #009933;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.6);
+}
+
+.modal__change-password-status{
+    position: absolute;
+    color: green;
+    font-size: 14px;
+    bottom: 8px;
+}
+
+.modal__nav-btn{
+    color: darkgray;
+    width: 100%;
+    padding: 14px;
+    background-color: #ccffff;
+    border-bottom-left-radius: inherit;
+    border-bottom-right-radius: inherit;
+}
+
+.modal__submit--loading{
+    box-shadow: none;
+    cursor: progress;
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+    <div class="container container--login">
+        <div class="modal modal__login">
+            <button class="btn modal__btn-exit">
+                <i class="bi bi-x-lg"></i>
+            </button>
+            <h2 class="modal__title modal__title--login">Member Login</h2>
+            <form action="#" class="modal__form modal__form--login">
+                <div class="modal__input modal__input--username">
+                    <i class="bi bi-person-fill"></i>
+                    <input type="text" placeholder="Username">
+                    <p class="modal__status modal__status--input1 modal__status--username"></p>
+                </div>
+                <div class="modal__input modal__input--password">
+                    <i class="bi bi-lock-fill"></i>
+                    <input type="password" placeholder="Password">
+                    <button type="button" class="btn btn--show-password"><i class="bi bi-eye-slash"></i></button>
+                    <p class="modal__status modal__status--input2 modal__status--password"></p>
+                </div>
+                <button type="button" class="btn modal__submit modal__submit--login">Login</button>
+                <p class="modal__change-password-status"></p>
+            </form>
+            <button type="button" class="btn modal__nav-btn modal__nav-btn--forgot-password">Forgot Password?</button>
+        </div>
+    </div>
+    <script type="module" src="login.js"></script>
+</body>
+</html>
