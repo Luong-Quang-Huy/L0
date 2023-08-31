@@ -1,14 +1,10 @@
 @import url("../share-styles.css");
 
-:root{
-    --color-theme: #70dbdb;
-}
-
 .invite{
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #f2f2f2;
+    background-color: var(--color-item);
     padding-top: 2rem;
     padding-bottom: 6rem;
     text-align: center;
@@ -50,7 +46,8 @@
 }
 
 .invite__email-input:focus-visible{
-    outline: 3px solid var(--color-theme);
+    outline: 3px solid var(--color-theme-lighter);
+    box-shadow: none;
 }
 
 .invite__email-input::placeholder{
@@ -64,7 +61,7 @@
     text-transform: uppercase;
     font-weight: 700;
     color: white;
-    background-color: #29a3a3;
+    background-color: var(--color-theme);
     font-size: small;
     padding: 10px 20px;
     border-radius: 4px;
@@ -72,8 +69,9 @@
     cursor: pointer;
 }
 
-.invite__btn-request:hover{
-    background-color: var(--color-theme);
+.invite__btn-request:active{
+    background-color: var(--color-theme-lighter);
+    box-shadow: none;
 }
 
 @media screen and (min-width: 480px) {

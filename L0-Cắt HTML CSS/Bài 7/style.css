@@ -1,0 +1,132 @@
+@import url("../share-styles.css");
+
+.beneficial{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2em;
+    padding: 2em 1em;
+}
+
+.beneficial-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5em;
+}
+
+.beneficial-content__title{
+    font-size: x-large;
+    font-weight: 400;
+    color: var(--color-text-lighter);
+}
+
+.beneficial-content__description{
+    font-size: small;
+    color: var(--color-text-lighter);
+    font-weight: 300;
+}
+
+.beneficial__btn{
+    padding: 8px 24px;
+    text-transform: uppercase;
+    font-size: smaller;
+    font-weight: 500;
+    color:white;
+    border-radius: 20px;
+    box-shadow: 1px 2px 4px rgba(0 ,0,0,0.4);
+}
+
+.beneficial__btn--btn1{
+    background-color: var(--color-theme);
+}
+
+.beneficial__btn--btn1:active{
+    background-color: var(--color-theme-lighter);
+    box-shadow: none;
+}
+
+.beneficial__btn--btn2{
+    background-color: var(--color-theme-success);
+}
+
+.beneficial__btn--btn2:active{
+    box-shadow: none;
+    background-color: var(--color-theme-success-lighter);
+}
+
+.beneficial-content__description > span {
+    font-weight: 500;
+    color: var(--color-text);
+    text-transform: capitalize;
+}
+
+.beneficial__photo{
+    max-width: 375px;
+    align-self: stretch;
+}
+
+@media screen and (min-width: 480px) {
+    .beneficial-content__title{
+        font-size: xx-large;
+    }
+
+     .beneficial-content__description{
+        font-size: smaller;
+    }
+
+    .beneficial__btn{
+        font-size: medium;
+    }
+}
+
+@media screen and (min-width: 375px) {
+     .beneficial__photo{
+        align-self: center;
+    }
+}
+
+
+@media screen and (min-width: 768px){
+    .beneficial{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .beneficial-content{
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .beneficial-content__title{
+        font-size: x-large;
+    }
+
+     .beneficial-content__description{
+        font-size: small;
+    }
+
+    .beneficial__btn{
+        font-size: smaller;
+    }
+}
+
+@media screen and (min-width: 1024px){
+    .beneficial{
+        margin: 0 auto;
+        max-width: 1024px;
+    }
+
+    .beneficial-content__title{
+        font-size: xx-large;
+    }
+
+     .beneficial-content__description{
+        font-size: smaller;
+    }
+
+    .beneficial__btn{
+        font-size: medium;
+    }
+}

@@ -9,9 +9,21 @@
     line-height: calc(1em + 0.5rem);
 }
 
+:root{
+    --color-theme:#29a3a3;
+    --color-theme-lighter: #70dbdb;
+    --color-theme-success: #66cc00;
+    --color-theme-success-lighter: #99ff33;
+    --color-text: #3d5c5c;
+    --color-text-lighter: #b3b3b3;
+    --color-title: #141f1f; 
+    --color-item: #f2f2f2;
+}
+
 button{
     background: none;
     border: none;
+    cursor: pointer;
 }
 
 image{

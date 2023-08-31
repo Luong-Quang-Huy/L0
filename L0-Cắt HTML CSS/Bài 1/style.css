@@ -9,10 +9,6 @@
     padding: 60px 0px;
 }
 
-@media screen and (min-width: 480px) {
-    
-}
-
 .about__logo{
     display: flex;
     color: white;
@@ -32,12 +28,12 @@
 
 .about__title > span{
     font-weight: 700;
-    color: #0099ff;
+    color: #1ac6ff;
 }
 
 .about__description{
     font-size: medium;
-    color: darkgray;
+    color: var(--color-text);
     text-align: center;
 }
 
@@ -49,7 +45,7 @@
 
 .about__link{
     padding: 10px 40px;
-    background-color: #14141f;
+    background-color: var(--color-title);
     color: white;
     font-weight: 500;
     border-radius: 4px;
