@@ -1,0 +1,100 @@
+@import url("../share-styles.css");
+
+:root{
+    --color-theme: #70dbdb;
+}
+
+.invite{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f2f2f2;
+    padding-top: 2rem;
+    padding-bottom: 6rem;
+    text-align: center;
+}
+
+.invite__logo{
+    font-size: 1.5rem;
+    color: var(--color-theme);
+    padding: 8px 12px;
+    border: 3px solid var(--color-theme);
+    border-radius: 50%;
+}
+
+.invite__title{
+    margin-top: 2rem;
+    letter-spacing: 2px;
+    font-size: x-large;
+    font-weight:bolder;
+    color: #141f1f;
+    margin-top: 1.4rem;
+}
+
+.invite__description{
+    margin-top: 1.75rem;
+    color: #3d5c5c;
+    font-size: small;
+    font-weight: 400;
+}
+
+.invite__email-input{
+    margin-top: 1.5rem;
+    font-size: small;
+    padding: 12px 10px;
+    width: 94%;
+    max-width: 395px;
+    border-radius: 2px;
+    border: none;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.invite__email-input:focus-visible{
+    outline: 3px solid var(--color-theme);
+}
+
+.invite__email-input::placeholder{
+    font-weight: 500;
+    color: #999999;
+    font-size: small;
+}
+
+.invite__btn-request{
+    margin-top: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: white;
+    background-color: #29a3a3;
+    font-size: small;
+    padding: 10px 20px;
+    border-radius: 4px;
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.invite__btn-request:hover{
+    background-color: var(--color-theme);
+}
+
+@media screen and (min-width: 480px) {
+    .invite__title{
+        font-size: xx-large;
+    }
+
+    .invite__description{
+        font-size: medium;
+    }
+
+    .invite__email-input{
+        font-size: medium;
+    }
+
+    .invite__email-input::placeholder{
+        font-size: medium;
+    }
+
+    .invite__btn-request{
+        font-size: medium;
+        padding: 14px 28px;
+    }
+}
