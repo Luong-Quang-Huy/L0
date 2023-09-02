@@ -1,0 +1,42 @@
+@import url("../share-styles.css");
+
+.testimonial{
+    padding: 0.4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    column-gap: 2rem;
+    row-gap: 4rem;
+    text-align: center;
+}
+
+.testimonial__title{
+    grid-column: 1 / 3;
+    font-size: xx-large;
+    text-transform: capitalize;
+    color: #ffc266;
+}
+
+.testimonial__item{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.testimonial-item__photo{
+    height: 120px;
+}
+
+.testimonial-item__description{
+    font-size: smaller;
+    font-style: italic;
+    color: var(--color-text);
+}
+
+@media screen and (min-width: 640px){
+    .testimonial{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+}
