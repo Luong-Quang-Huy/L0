@@ -93,7 +93,7 @@
 
     .contact{
         display: grid;
-        grid-template-columns: 4fr 6fr;
+        grid-template-columns: 3fr 7fr;
         column-gap: 2rem;
         align-items: start;
         justify-items: start;
