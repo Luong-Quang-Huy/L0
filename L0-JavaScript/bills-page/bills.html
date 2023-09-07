@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoes Shop - My Bills</title>
+    <link rel="stylesheet" href="bills.css">
+</head>
+<body>
+    <section class="app-navigation">
+        <div class="nav__bar">
+            <div class="brand">
+                <img id="nike" src="../images/nike_logo.jpg" alt="nike logo" class="brand__logo">
+                <label for="nike" class="brand__name">Nike</label>
+            </div>
+            <nav class="nav-bar__nav">
+                <a href="../home-page/home.html" class="nav__link nav__link--home" target="_self">home</a>
+                <a href="" class="nav__link nav__link--about" target="_self">about</a>
+                <a href="../bills-page/bills.html" class="nav__link nav__link--bills current-page" target="_self">bills</a>
+                <a href="../cart-page/cart.html" class="nav__link nav__link--cart" target="_self">
+                    <i class="bi bi-cart3 cart__icon"></i>
+                    <span class="cart__products-count">0</span>
+                </a>
+            </nav>
+        </div>
+    </section>
+    <section class="bills">
+        <div class="bills__headers">
+            <span>Code</span>
+            <span>Customer Name</span>
+            <span>Date</span>
+            <span>Item Numbers</span>
+            <span>Total Quantity</span>
+            <span>Total Price</span>
+            <span>Return</span>
+        </div>
+        <div class="bill">
+            <div class="bill__code&detail">
+                <span class="bill__code">abcdzyztx</span>
+                <details class="bill__detail">
+                    <summary>Details</summary>
+                    <div class="bill-detail__open">
+                       <div class="product-headers">
+                            <span>Product</span>
+                            <span>Price</span>
+                            <span>Quantity</span>
+                       </div>
+                       <div class="product">
+                            <div class="product_info">
+                                <img src="../images/shoe_3.jpg" alt="" class="product__photo">
+                                <h4 class="product__name">Lồn thâm nhiều khí</h4>
+                            </div>
+                            <span class="product__price">200_000VND</span>
+                            <span class="product__quantity">1</span>
+                       </div>  
+                    </div>
+                </details>
+            </div>
+            <span class="bill__customer-name">Admin Admin</span>
+            <span class="bill__date">8/9/2023</span>
+            <span class="bill__item-numbers">1</span>
+            <span class="bill__total-quantity">1</span>
+            <span class="bill__total-price">$4.200</span>
+            <button class="bill__return-btn"><i class="bi bi-x-square"></i></button>
+        </div>
+    </section>
+    <script type="module" src="bills.js"></script>
+</body>
+</html>

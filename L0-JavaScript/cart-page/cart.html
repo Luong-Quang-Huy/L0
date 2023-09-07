@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoes Shop - MY Shopping Cart</title>
+    <link rel="stylesheet" href="cart.css">
+</head>
+
+<body>
+    <section class="app-navigation">
+        <div class="nav__bar">
+            <div class="brand">
+                <img id="nike" src="../images/nike_logo.jpg" alt="nike logo" class="brand__logo">
+                <label for="nike" class="brand__name">Nike</label>
+            </div>
+            <nav class="nav-bar__nav">
+                <a href="../home-page/home.html" class="nav__link nav__link--home" target="_self">home</a>
+                <a href="" class="nav__link nav__link--about" target="_self">about</a>
+                <a href="../bills-page/bills.html" class="nav__link nav__link--bills" target="_self">bills</a>
+                <a href="../cart-page/cart.html" class="nav__link nav__link--cart current-page" target="_self">
+                    <i class="bi bi-cart3 cart__icon"></i>
+                    <span class="cart__products-count">0</span>
+                </a>
+            </nav>
+        </div>
+    </section>
+    <section class="cart">
+        <div class="cart__products">
+            <div class="product__headers">
+                <span>Product Name</span>
+                <span>Quantity</span>
+                <span>Subtotal</span>
+                <span>Total</span>
+                <span>Clear Cart</span>
+            </div>
+            <div class="product">
+                <div class="product__info">
+                    <img src="../images/shoe_10.jpg" alt="nike shoes" class="product__photo">
+                    <h4 class="product__name">Nike Air Force 1 React</h4>
+                    <span class="product__quantity">Quantity: 20</span>
+                </div>
+                <div class="product__counter">
+                    <button class="product-counter__btn product-counter__btn--decrease"><i
+                            class="bi bi-dash-lg"></i></button>
+                    <label for="" class="product-counter__counter">3</label>
+                    <button class="product-counter__btn product-counter__btn--increase"><i
+                            class="bi bi-plus-lg"></i></button>
+                </div>
+                <span class="product__subtotal">$42.00</span>
+                <span class="product__total">126.00</span>
+                <button class="product__clear-btn">
+                    <i class="bi bi-x-circle"></i>
+                </button>
+            </div>
+        </div>
+        <p class="cart__total">$12.500</p>
+        <button class="cart__buy-btn">Buy</button>
+        <a href="../home-page/home.html" class="cart__back-to-shopping" target="_self">
+            <i class="bi bi-arrow-left-short"></i> Back to Shopping
+        </a>
+    </section>
+    <div class="cart__buy-window">
+        <form action="" class="buy-form">
+            <h3 class="buy-form__title">Thông tin người mua</h3>
+            <button type="button" class="buy-form__exit-btn"><i class="bi bi-x"></i></button>
+            <label for="name" class="buy-form__label">Họ và tên</label>
+            <input type="text" class="buy-form__input buy-form__input--last-name" placeholder="Họ">
+            <input type="text" class="buy-form__input buy-form__input--first-name" id="name" placeholder="Tên">
+            <label for="email" class="buy-form__label buy-form__label--email">Email</label>
+            <input type="email" class="buy-form__input buy-form__input--email buy-form__input--error" id="email" placeholder="Email">
+            <label for="phone" class="buy-form__label">Số điện thoại</label>
+            <input type="number" class="buy-form__input buy-form__input--phone" id="phone" placeholder="Số điện thoại">
+            <label for="city" class="buy-form__label">Địa chỉ</label>
+            <select name="city" id="city" class="buy-form__input buy-form__input--city">
+                <option value="">--Chọn Tỉnh/Thành phố--</option>
+            </select>
+            <select name="district" id="district" class="buy-form__input buy-form__input--district">
+                <option value="">--ChọnHuyện/Quận--</option>
+            </select>
+            <select name="local" id="local" class="buy-form__input buy-form__input--local">
+                <option value="">--Chọn Phường/Xã--</option>
+            </select>
+            <input type="text" class="buy-form__input buy-form__input--address" placeholder="Số nhà">
+            <textarea name="message" id="message" class="buy-form__input buy-form__input--message">Lời nhắn</textarea>
+            <p class="buy-form__error-status">địt mẹ mày :v</p>
+            <button type="button" class="buy-form__cancel-btn">Hủy</button>
+            <button type="submit" class="buy-form__submit-btn">Xác nhận</button>
+        </form>
+    </div>
+    <section class="cart-empty">
+        <img src="../images/empty-cart.png" alt="" class="cart-empty__photo">
+        <a href="../home-page/home.html" class="cart__back-to-shopping" target="_self">
+            <i class="bi bi-arrow-left-short"></i> Back to Shopping
+        </a>
+    </section>
+    <script type="module" src="cart.js"></script>
+</body>
+
+</html>
