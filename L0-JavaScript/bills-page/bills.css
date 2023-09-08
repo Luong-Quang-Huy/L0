@@ -1,1 +1,85 @@
 @import url("../share-styles.css");
+
+.bills{
+    margin: 0 auto;
+    max-width: 1280px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3em;
+}
+
+.bills__table{
+    margin-top: 1em;
+    border-collapse: collapse;
+}
+
+th,  td{
+    text-align: start;
+    padding:1em 2em;
+}
+
+tr:not(thead tr){
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+}
+
+.bill__return-btn{
+    color: red;
+    font-size: large;
+}
+
+.bill__return-btn:active{
+    background-color: red;
+    color: white;
+}
+
+.bill__details{
+    margin-top: 0.5em;
+    position: relative;
+}
+
+.bill__details summary {
+    color: #3399ff;
+}
+
+.bill__products{
+    width: 100vw;
+    max-width: 768px;
+    background-color: whitesmoke;
+    border-collapse: collapse;
+    box-shadow: 2px 3px 12px rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+    position: absolute;
+    left: 0;
+    top: 1.5em;
+    overflow: scroll;
+}
+
+.product__info{
+    display: flex;
+    gap:1em;
+}
+
+.product__photo{
+    width: 100px;
+    aspect-ratio: 4/3;
+    border-radius: 4px;
+}
+
+.product__name{
+    
+}
+
+.bills__back-to-shopping{
+    color:red;
+    border-radius: 4px;
+    padding: 8px 12px;
+    border: 1px solid red;
+    text-decoration: none;
+    align-self: start;
+}
+
+
+
+

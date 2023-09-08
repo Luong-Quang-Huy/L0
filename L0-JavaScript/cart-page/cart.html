@@ -27,34 +27,42 @@
         </div>
     </section>
     <section class="cart">
-        <div class="cart__products">
-            <div class="product__headers">
-                <span>Product Name</span>
-                <span>Quantity</span>
-                <span>Subtotal</span>
-                <span>Total</span>
-                <span>Clear Cart</span>
-            </div>
-            <div class="product">
-                <div class="product__info">
-                    <img src="../images/shoe_10.jpg" alt="nike shoes" class="product__photo">
-                    <h4 class="product__name">Nike Air Force 1 React</h4>
-                    <span class="product__quantity">Quantity: 20</span>
-                </div>
-                <div class="product__counter">
-                    <button class="product-counter__btn product-counter__btn--decrease"><i
-                            class="bi bi-dash-lg"></i></button>
-                    <label for="" class="product-counter__counter">3</label>
-                    <button class="product-counter__btn product-counter__btn--increase"><i
-                            class="bi bi-plus-lg"></i></button>
-                </div>
-                <span class="product__subtotal">$42.00</span>
-                <span class="product__total">126.00</span>
-                <button class="product__clear-btn">
-                    <i class="bi bi-x-circle"></i>
-                </button>
-            </div>
-        </div>
+        <table class="cart__products-table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                    <th>Total</th>
+                    <th>Clear Cart</th>
+                </tr>
+            </thead>
+            <tbody class="products">
+                <tr class="product">
+                    <td>
+                        <div class="product__info">
+                            <img src="../images/shoe_10.jpg" alt="nike shoes" class="product__photo">
+                            <h4 class="product__name">Nike Air Force 1 React</h4>
+                            <span class="product__quantity">Quantity: 20</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="product__counter">
+                            <button class="product-counter__btn product-counter__btn--decrease"><i class="bi bi-dash-lg"></i></button>
+                            <label for="" class="product-counter__counter">3</label>
+                            <button class="product-counter__btn product-counter__btn--increase"><i class="bi bi-plus-lg"></i></button>
+                        </div>
+                    </td>
+                    <td class="product__subtotal">$42.00</td>
+                    <td class="product__total">126.00</td>
+                    <td>
+                        <button class="product__clear-btn">
+                            <i class="bi bi-x-circle"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <p class="cart__total">$12.500</p>
         <button class="cart__buy-btn">Buy</button>
         <a href="../home-page/home.html" class="cart__back-to-shopping" target="_self">
