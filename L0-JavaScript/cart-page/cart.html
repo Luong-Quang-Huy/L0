@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <section class="app-navigation">
+    <header class="app-navigation">
         <div class="nav__bar">
             <div class="brand">
                 <img id="nike" src="../images/nike_logo.jpg" alt="nike logo" class="brand__logo">
@@ -25,84 +25,7 @@
                 </a>
             </nav>
         </div>
-    </section>
-    <section class="cart">
-        <table class="cart__products-table">
-            <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Quantity</th>
-                    <th>Subtotal</th>
-                    <th>Total</th>
-                    <th>Clear Cart</th>
-                </tr>
-            </thead>
-            <tbody class="products">
-                <tr class="product">
-                    <td>
-                        <div class="product__info">
-                            <img src="../images/shoe_10.jpg" alt="nike shoes" class="product__photo">
-                            <h4 class="product__name">Nike Air Force 1 React</h4>
-                            <span class="product__quantity">Quantity: 20</span>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="product__counter">
-                            <button class="product-counter__btn product-counter__btn--decrease"><i class="bi bi-dash-lg"></i></button>
-                            <label for="" class="product-counter__counter">3</label>
-                            <button class="product-counter__btn product-counter__btn--increase"><i class="bi bi-plus-lg"></i></button>
-                        </div>
-                    </td>
-                    <td class="product__subtotal">$42.00</td>
-                    <td class="product__total">126.00</td>
-                    <td>
-                        <button class="product__clear-btn">
-                            <i class="bi bi-x-circle"></i>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <p class="cart__total">$12.500</p>
-        <button class="cart__buy-btn">Buy</button>
-        <a href="../home-page/home.html" class="cart__back-to-shopping" target="_self">
-            <i class="bi bi-arrow-left-short"></i> Back to Shopping
-        </a>
-    </section>
-    <div class="cart__buy-window">
-        <form action="" class="buy-form">
-            <h3 class="buy-form__title">Thông tin người mua</h3>
-            <button type="button" class="buy-form__exit-btn"><i class="bi bi-x"></i></button>
-            <label for="name" class="buy-form__label">Họ và tên</label>
-            <input type="text" class="buy-form__input buy-form__input--last-name" placeholder="Họ">
-            <input type="text" class="buy-form__input buy-form__input--first-name" id="name" placeholder="Tên">
-            <label for="email" class="buy-form__label buy-form__label--email">Email</label>
-            <input type="email" class="buy-form__input buy-form__input--email buy-form__input--error" id="email" placeholder="Email">
-            <label for="phone" class="buy-form__label">Số điện thoại</label>
-            <input type="number" class="buy-form__input buy-form__input--phone" id="phone" placeholder="Số điện thoại">
-            <label for="city" class="buy-form__label">Địa chỉ</label>
-            <select name="city" id="city" class="buy-form__input buy-form__input--city">
-                <option value="">--Chọn Tỉnh/Thành phố--</option>
-            </select>
-            <select name="district" id="district" class="buy-form__input buy-form__input--district">
-                <option value="">--ChọnHuyện/Quận--</option>
-            </select>
-            <select name="local" id="local" class="buy-form__input buy-form__input--local">
-                <option value="">--Chọn Phường/Xã--</option>
-            </select>
-            <input type="text" class="buy-form__input buy-form__input--address" placeholder="Số nhà">
-            <textarea name="message" id="message" class="buy-form__input buy-form__input--message">Lời nhắn</textarea>
-            <p class="buy-form__error-status">địt mẹ mày :v</p>
-            <button type="button" class="buy-form__cancel-btn">Hủy</button>
-            <button type="submit" class="buy-form__submit-btn">Xác nhận</button>
-        </form>
-    </div>
-    <section class="cart-empty">
-        <img src="../images/empty-cart.png" alt="" class="cart-empty__photo">
-        <a href="../home-page/home.html" class="cart__back-to-shopping" target="_self">
-            <i class="bi bi-arrow-left-short"></i> Back to Shopping
-        </a>
-    </section>
+    </header>
     <script type="module" src="cart.js"></script>
 </body>
 

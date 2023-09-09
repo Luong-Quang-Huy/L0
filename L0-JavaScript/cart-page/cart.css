@@ -4,6 +4,7 @@
     margin: 1em auto;
     max-width: 1280px;
     display: grid;
+    row-gap: 1.5em;
     grid-template-columns: 1fr 1fr;
 }
 
@@ -35,10 +36,12 @@
     display: grid;
     grid-template-columns: 100px auto;
     row-gap: 0.5em;
+    column-gap: 1em;
 }
 
 .product__photo{
     width: 100%;
+    border-radius: 4px;
     aspect-ratio: 4/3;
     grid-column: 1/2;
     grid-row:span 2;
@@ -145,6 +148,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    position: absolute;
+    z-index: 2;
+    inset: 0;
 }
 
 .buy-form{
@@ -154,10 +160,19 @@
     padding: 1.5em 0.25em 1.5em 1em;
     border-radius: 4px;
     box-shadow: 2px 4px 5px rgba(0, 0, 0, 0.3);
+    animation: scale-up 0.7s ease-in-out;
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     row-gap: 0.5em;
     column-gap: 1em;
+}
+
+@keyframes scale-up {
+    from{
+        transform: scale(0);
+    }to{
+        transform: scale(1);
+    }
 }
 
 .buy-form__title{

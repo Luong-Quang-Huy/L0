@@ -2,112 +2,112 @@ const listData = [
   {
     id: 1,
     name: "NIKE AIR HURACHE PRM",
-    photo: "./images/shoe_1.jpg",
+    photo: "../images/shoe_1.jpg",
     price: 100,
     quantity: 10,
   },
   {
     id: 2,
     name: "MIKE AIR MAX 90",
-    photo: "./images/shoe_2.jpg",
+    photo: "../images/shoe_2.jpg",
     price: 110,
     quantity: 12,
   },
   {
     id: 3,
-    name: "NIKE WAFFLE ONE CRATER NN",
-    photo: "./images/shoe_3.jpg",
+    name: "NIKE WAFFLE ONE CRATER",
+    photo: "../images/shoe_3.jpg",
     price: 120,
     quantity: 14,
   },
   {
     id: 4,
     name: "AIR PRESTO MID UTILITY",
-    photo: "./images/shoe_4.jpg",
+    photo: "../images/shoe_4.jpg",
     price: 135,
     quantity: 10,
   },
   {
     id: 5,
     name: "NIKE AIR ZOOM-TYPE SE",
-    photo: "./images/shoe_5.jpg",
+    photo: "../images/shoe_5.jpg",
     price: 140,
     quantity: 12,
   },
   {
     id: 6,
-    name: "BLAZE LOW '77 JUMBO WNTR",
-    photo: "./images/shoe_6.jpg",
+    name: "BLAZE LOW '77 JUMBO",
+    photo: "../images/shoe_6.jpg",
     price: 150,
     quantity: 14,
   },
   {
     id: 7,
     name: "BLAZER MID '77 PRM",
-    photo: "./images/shoe_7.jpg",
+    photo: "../images/shoe_7.jpg",
     price: 160,
     quantity: 10,
   },
   {
     id: 8,
     name: "BLAZER MID BRO CLUB",
-    photo: "./images/shoe_8.jpg",
+    photo: "../images/shoe_8.jpg",
     price: 190,
     quantity: 12,
   },
   {
     id: 9,
     name: "NIKE WAFFLE ONE LTR",
-    photo: "./images/shoe_9.jpg",
+    photo: "../images/shoe_9.jpg",
     price: 200,
     quantity: 14,
   },
   {
     id: 10,
-    name: "NIKE AIR HUARACHE CRATER PRM",
-    photo: "./images/shoe_10.jpg",
+    name: "NIKE AIR HUARACHE CRATER",
+    photo: "../images/shoe_10.jpg",
     price: 210,
     quantity: 12,
   },
   {
     id: 11,
     name: "NIKE AIR PRESTO MID UTILITY",
-    photo: "./images/shoe_11.jpg",
+    photo: "../images/shoe_11.jpg",
     price: 220,
-    quantity: 114,
+    quantity: 14,
   },
   {
     id: 12,
     name: "NIKE AIR MAX 90SE",
-    photo: "./images/shoe_12.jpg",
+    photo: "../images/shoe_12.jpg",
     price: 225,
     quantity: 12,
   },
   {
     id: 13,
     name: "REACT VISION 3M",
-    photo: "./images/shoe_13.jpg",
+    photo: "../images/shoe_13.jpg",
     price: 235,
     quantity: 14,
   },
   {
     id: 14,
     name: "BLAZOR LOX",
-    photo: "./images/shoe_14.jpg",
+    photo: "../images/shoe_14.jpg",
     price: 240,
     quantity: 10,
   },
   {
     id: 15,
     name: "NIKE KILLSHOT OG",
-    photo: "./images/shoe_15.jpg",
+    photo: "../images/shoe_15.jpg",
     price: 245,
     quantity: 12,
   },
   {
     id: 16,
     name: "AIR MAX 270 REACT ENG",
-    photo: "./images/shoe_16.jpg",
+    photo: "../images/shoe_16.jpg",
     price: 250,
     quantity: 14,
   },
@@ -116,9 +116,14 @@ const listData = [
 const keyLocalStorageListSP = "DANHSACHSP";
 const keyLocalStorageItemCart = "DANHSACHITEMCART";
 
-const storeData = (key) => {
-  const dataString = JSON.stringify(listData);
-  if (typeof dataString === "string") {
+const storeData = (key, value) => {
+  let dataString;
+  if(key === keyLocalStorageListSP){
+    dataString = JSON.stringify(value ? value : listData);
+  }else if(key === keyLocalStorageItemCart){
+    dataString = JSON.stringify(value ? value : []);
+  }
+  if(typeof dataString === "string") {
     localStorage.setItem(key, dataString);
   }
 };
@@ -127,12 +132,9 @@ const getData = (key) => {
   const dataString = localStorage.getItem(key);
   if (typeof dataString) {
     return JSON.parse(dataString);
+  }else{
+    return [];
   }
 };
-
-storeData(keyLocalStorageListSP);
-const listSP = getData(keyLocalStorageListSP);
-
-
 
 export {keyLocalStorageListSP, keyLocalStorageItemCart, getData, storeData}

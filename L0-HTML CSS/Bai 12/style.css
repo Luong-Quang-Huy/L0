@@ -76,6 +76,7 @@
 }
 
 .contact__info{
+    text-align: start;
     display: grid;
     grid-template-columns: auto 1fr;
     align-items: start;

@@ -68,7 +68,7 @@ tr:not(thead tr){
 }
 
 .product__name{
-    
+    font-size: large;
 }
 
 .bills__back-to-shopping{
