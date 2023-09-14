@@ -69,6 +69,10 @@
         justify-items: start;
     }
 
+    .contact__title{
+        grid-column: span 2;
+    }
+
     .contact-form__input--subject, .contact-form__message{
         grid-column: 1 / 3;
     }

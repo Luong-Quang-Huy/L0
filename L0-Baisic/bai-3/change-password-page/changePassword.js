@@ -1,4 +1,9 @@
 import { tryChangePassword } from "../loginOperation.js";
+import { storeLoginData } from "../loginOperation.js";
+
+if (!sessionStorage.getItem("loginData")) {
+  storeLoginData("admin", "admin");
+}
 
 const exitBtn = document.querySelector(".modal__btn-exit");
 const currentPassword = document.querySelector(
@@ -78,7 +83,7 @@ async function handleChangePassword(){
                 }else{
                   reject(statusText);
                 }
-            }, 1500);
+            }, 700);
         });
          const status = await changePassword;
          const params = new URLSearchParams();

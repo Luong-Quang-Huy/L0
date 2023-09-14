@@ -34,11 +34,15 @@
 .offer__link{
     margin-top: 48px;
     padding: 8px 12px;
-    background-color: #ff5c33;
+    background-color: #e65c00;
     border-radius: 3px;
     font-size: medium;
     color: white;
     box-shadow: 1px 4px 12px rgba(0, 0, 0, 0.6);
+}
+
+.offer__link:hover{
+    background-color: #ff751a;
 }
 
 @media screen and (min-width: 492px) {

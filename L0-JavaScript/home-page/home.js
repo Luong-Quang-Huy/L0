@@ -1,5 +1,5 @@
 import { keyLocalStorageListSP, keyLocalStorageItemCart, storeData, getData } from "../dataOperation.js";
-import { itemsCounter } from "../utilities.js";
+import { getBillSummary } from "../utilities.js";
 
 if(!localStorage.getItem(keyLocalStorageListSP)){
   storeData(keyLocalStorageListSP);
@@ -10,25 +10,25 @@ if(!localStorage.getItem(keyLocalStorageItemCart)){
 }
 
 const listSP = getData(keyLocalStorageListSP);
+const listItemCart = getData(keyLocalStorageItemCart);
 const productsCountElement = document.querySelector('.cart__products-count');
 const shelfElement = document.querySelector('.shelf');
+const cartSummary = getBillSummary(listItemCart);
+productsCountElement.textContent = cartSummary.get("total_quantity");
 
-productsCountElement.textContent = itemsCounter(getData(keyLocalStorageItemCart));
-
-const addSP = (id, soLuong = 1) => {
-  const listItemCart = getData(keyLocalStorageItemCart);
+const addSP = (id, buy_quantity = 1) => {
   const product = listItemCart.find(product => product.id === id);
   if(product){
-    product.soLuong += soLuong;
+    product.buy_quantity += 1;
   }else{
     listItemCart.push({
-      "id": id,
-      "soLuong": soLuong
+      id,
+      buy_quantity,
     });
   }
 
   storeData(keyLocalStorageItemCart, listItemCart);
-  window.location.reload();
+  productsCountElement.textContent = getBillSummary(getData(keyLocalStorageItemCart)).get("total_quantity");
 }
 
 const createProductElement = ({id, photo, name, price, quantity}) => {
@@ -44,7 +44,8 @@ const createProductElement = ({id, photo, name, price, quantity}) => {
                 <h4 class="shoes__name">${name}</h4>
                 <span class="shoes__price">$${Number(price).toFixed(2)}</span>
                 <span class="shoes__quantity">Quantity:${quantity}</span>`;
-  shoesElement.querySelector('.shoes__btn-add-item').addEventListener('click', () => {
+  const addBtn = shoesElement.querySelector(".shoes__btn-add-item");
+  addBtn.addEventListener('click', () => {
     addSP(id);
   });
   return shoesElement;

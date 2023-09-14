@@ -1,4 +1,4 @@
-const listData = [
+export const productsData = [
   {
     id: 1,
     name: "NIKE AIR HURACHE PRM",
@@ -116,10 +116,22 @@ const listData = [
 const keyLocalStorageListSP = "DANHSACHSP";
 const keyLocalStorageItemCart = "DANHSACHITEMCART";
 
+const getProductInfo = (id) => {
+  const product = productsData.find(product => product.id === id);
+  if(product){
+    const {name, photo, price} = product;
+    return ({
+      name,
+      photo,
+      price
+    });
+  }
+}
+
 const storeData = (key, value) => {
   let dataString;
   if(key === keyLocalStorageListSP){
-    dataString = JSON.stringify(value ? value : listData);
+    dataString = JSON.stringify(value ? value : productsData);
   }else if(key === keyLocalStorageItemCart){
     dataString = JSON.stringify(value ? value : []);
   }
@@ -137,4 +149,4 @@ const getData = (key) => {
   }
 };
 
-export {keyLocalStorageListSP, keyLocalStorageItemCart, getData, storeData}
+export {keyLocalStorageListSP, keyLocalStorageItemCart, getData, storeData, getProductInfo}

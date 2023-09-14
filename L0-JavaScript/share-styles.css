@@ -43,9 +43,12 @@ button{
 }
 
 .brand{
+    text-decoration: none;
+    color: black;
     display: flex;
     gap: 0.2em;
     align-items: center;
+    cursor: pointer;
 }
 
 .brand__logo{

@@ -69,9 +69,8 @@
     cursor: pointer;
 }
 
-.invite__btn-request:active{
+.invite__btn-request:hover{
     background-color: var(--color-theme-lighter);
-    box-shadow: none;
 }
 
 @media screen and (min-width: 480px) {

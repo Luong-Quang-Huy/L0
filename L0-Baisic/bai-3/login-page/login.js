@@ -1,4 +1,9 @@
 import { tryLogin } from "../loginOperation.js";
+import { storeLoginData } from "../loginOperation.js";
+
+if (!sessionStorage.getItem("loginData")) {
+  storeLoginData("admin", "admin");
+}
 
 const exitBtn = document.querySelector(".modal__btn-exit");
 const username = document.querySelector(".modal__input--username > input");
@@ -78,7 +83,7 @@ async function handleLogin() {
           } else {
             reject(statusText);
           }
-        }, 1500);
+        }, 700);
       });
       const  status = await login;
       const params = new URLSearchParams();

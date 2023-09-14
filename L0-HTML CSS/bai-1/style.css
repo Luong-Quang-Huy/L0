@@ -51,6 +51,10 @@
     border-radius: 4px;
 }
 
+.about__link:hover{
+    background-color: var(--color-text);
+}
+
 @media screen and (min-width: 375px) {
     .about__title{
         font-size: x-large;
