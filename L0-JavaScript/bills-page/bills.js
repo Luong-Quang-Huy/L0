@@ -151,7 +151,7 @@ const renderBills = async () => {
   try {
     const bills = await getBills(() => {
         loadingSTitle.classList.add("bills-loading__status--fail");
-        loadingSTitle.textContent = "Máy chủ không phản h";
+        loadingSTitle.textContent = "Máy chủ không phản hồi";
     });
     if(bills.length === 0){
         loadingSTitle.textContent = "Bạn không có đơn hàng nào";
