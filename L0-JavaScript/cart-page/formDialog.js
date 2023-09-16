@@ -1,3 +1,5 @@
+import { keyLocalStorageItemCart, getData} from "../storageOperation.js";
+import { getCartSummary } from "../utilities.js";
 import { randomId } from "../utilities.js";
 
 const baseURL = "https://provinces.open-api.vn/api";
@@ -286,6 +288,8 @@ const createFormDialog = (callback) => {
   }
 
   const handleSubmit = async () => {
+    submitBtnElement.textContent = "Sending...";
+    submitBtnElement.disabled = true;
     const id = randomId(10);
     const now = new Date(Date.now());
     const dateString = now.toLocaleString();
@@ -293,19 +297,26 @@ const createFormDialog = (callback) => {
     const email = emailInput.value;
     const phoneNumber = phoneInput.value;
     const message = messageInput.value?.trim();
+    const listCartItem = getData(keyLocalStorageItemCart);
+    const cartSummary = getCartSummary(listCartItem);
+    const totalPrice = cartSummary.get("total_price");
+    const totalQuantity = cartSummary.get("total_quantity");
     try{
       const [provinceName, districtName, wardName] = await getLocation(selectProvinceElement.value, selectDistrictElement.value, selectWardElement.value);
       const address = `${addressInput.value}/${wardName}-${districtName}-${provinceName}`;
 
       const bill = {
         id,
-        order_date: dateString,
+        date: dateString,
         address,
+        total_price: totalPrice,
+        total_quantity: totalQuantity,
+        items: listCartItem,
         customer: { 
           name,
           email,
           phone: phoneNumber,
-       }
+       },
       };
       if (message) {
         bill.message = message;

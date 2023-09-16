@@ -308,7 +308,7 @@ select.buy-form__input {
   position: relative;
   top: 0;
   gap: 2.5em;
-  animation: cart-buy-success-appear 0.5s ease-out;
+  animation: cart__buy-success--appear 0.5s ease-out;
   transition-property: transform, top;
   transition-duration: 0.5s;
   transition-timing-function: ease-in;
@@ -319,7 +319,7 @@ select.buy-form__input {
     top: -50vh;
 }
 
-@keyframes cart-buy-success-appear {
+@keyframes cart__buy-success--appear {
   from {
     transform: scale(0);
     top: -50vh;
@@ -336,6 +336,10 @@ select.buy-form__input {
   color: #00ff00;
 }
 
+.cart-buy-success__title--error{
+  color: red;
+}
+
 .cart-buy-success__notification {
   font-size: large;
 }
@@ -346,6 +350,10 @@ select.buy-form__input {
   font-size: larger;
   color: white;
   background-color: #00ff00;
+}
+
+.cart-buy-success__confirm-btn--error{
+  background-color: purple;
 }
 
 .cart-buy-success__confirm-btn:hover {

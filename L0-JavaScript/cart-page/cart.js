@@ -3,9 +3,11 @@ import {
   keyLocalStorageItemCart,
   storeData,
   getData,
-} from "../dataOperation.js";
-import {getBillSummary} from "../utilities.js";
+  removeItemsInStore
+} from "../storageOperation.js";
+import {getCartSummary} from "../utilities.js";
 import createFormDialog from "./formDialog.js";
+import { addBill } from "../requestOperation.js";
 
 if (!localStorage.getItem(keyLocalStorageItemCart)) {
   storeData(keyLocalStorageItemCart);
@@ -14,20 +16,24 @@ if (!localStorage.getItem(keyLocalStorageItemCart)) {
 const listSP = getData(keyLocalStorageListSP);
 const listItemCart = getData(keyLocalStorageItemCart);
 const productsCountElement = document.querySelector(".cart__products-count");
-const cartSummary = getBillSummary(listItemCart);
+const cartSummary = getCartSummary(listItemCart);
 productsCountElement.textContent = cartSummary.get("total_quantity");
 const mainElement = document.body.querySelector(".main");
 
 (() => {
   const searchPrams = new URLSearchParams(window.location.search);
   if(searchPrams.has("buy-success")){
-    if(searchPrams.get("buy-success")){
+      const isSuccess = searchPrams.get("buy-success");
       const successNotificationElement = document.createElement("div");
       successNotificationElement.classList.add("cart__buy-success-wrapper");
       successNotificationElement.innerHTML = `<div class="cart__buy-success">
-        <h2 class="cart-buy-success__title">Đặt hàng thành công!</h2>
+        ${isSuccess === "success" ? `<h2 class="cart-buy-success__title">Đặt hàng thành công!</h2>
         <p class="cart-buy-success__notification">Hàng đang được chuyển đến cho bạn từ nhà phân phối gần nhất.</p>
-        <button class="cart-buy-success__confirm-btn">OK</button>
+        <button class="cart-buy-success__confirm-btn">OK</button>`
+        : `<h2 class="cart-buy-success__title cart-buy-success__title--error">Đặt hàng thất bại!</h2>
+        <p class="cart-buy-success__notification">Lỗi máy chủ, vui lòng thử lại sau.</p>
+        <button class="cart-buy-success__confirm-btn cart-buy-success__confirm-btn--error">OK</button>`
+      }
       <div>`;
       const confirmBtn = successNotificationElement.querySelector('.cart-buy-success__confirm-btn');
       confirmBtn.addEventListener('click', () => {
@@ -39,7 +45,6 @@ const mainElement = document.body.querySelector(".main");
 
       mainElement.appendChild(successNotificationElement);
     }
-  }
 })();
 
   const removeItemFromCart = (id) => {
@@ -153,10 +158,23 @@ if (listItemCart.length === 0) {
   totalElement.textContent = cartSummary.get("total_price").toFixed(2);
 
   buyBtnElement.addEventListener("click", () => {
-    const formDialogElement = createFormDialog((bill) => {
-      const searchPrams = new URLSearchParams();
-      searchPrams.append("buy-success", true);
-      window.location.replace(`./cart.html?${searchPrams.toString()}`);
+      const formDialogElement = createFormDialog(async (bill) => {
+      try{
+        const status = await addBill(bill,() => {
+          const searchPrams = new URLSearchParams();
+          searchPrams.append("buy-success", "fail");
+          window.location.replace(`./cart.html?${searchPrams.toString()}`);
+        });
+        if(status === "success"){
+          removeItemsInStore(bill.items);
+          storeData(keyLocalStorageItemCart, []);
+          const searchPrams = new URLSearchParams();
+          searchPrams.append("buy-success", status);
+          window.location.replace(`./cart.html?${searchPrams.toString()}`);
+        }
+      }catch(error){
+        console.error(error);
+      }
     });
     mainElement.appendChild(formDialogElement);
   });

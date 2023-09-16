@@ -1,4 +1,4 @@
-import { getProductInfo } from "./dataOperation.js";
+import { getProductInfo } from "./storageOperation.js";
 
 const getTotalQuantity = (arr) => {
   return arr.reduce((counter, item) => counter + item.buy_quantity, 0);
@@ -11,7 +11,7 @@ const getTotalPrice = (arr) => {
   },0);
 }
 
-const getBillSummary = (arr) => {
+const getCartSummary = (arr) => {
   const summary = new Map();
   summary.set("total_quantity", getTotalQuantity(arr));
   summary.set("total_price", getTotalPrice(arr));
@@ -32,4 +32,4 @@ const randomId = (numberOfCharacters) => {
   }
 }
 
-export {getBillSummary, randomId}
+export {getCartSummary, randomId}

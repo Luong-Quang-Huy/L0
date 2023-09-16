@@ -1,5 +1,5 @@
-import { keyLocalStorageListSP, keyLocalStorageItemCart, storeData, getData } from "../dataOperation.js";
-import { getBillSummary } from "../utilities.js";
+import { keyLocalStorageListSP, keyLocalStorageItemCart, storeData, getData } from "../storageOperation.js";
+import { getCartSummary } from "../utilities.js";
 
 if(!localStorage.getItem(keyLocalStorageListSP)){
   storeData(keyLocalStorageListSP);
@@ -13,13 +13,16 @@ const listSP = getData(keyLocalStorageListSP);
 const listItemCart = getData(keyLocalStorageItemCart);
 const productsCountElement = document.querySelector('.cart__products-count');
 const shelfElement = document.querySelector('.shelf');
-const cartSummary = getBillSummary(listItemCart);
+const cartSummary = getCartSummary(listItemCart);
 productsCountElement.textContent = cartSummary.get("total_quantity");
 
 const addSP = (id, buy_quantity = 1) => {
+  const quantityInStore = listSP.find(product => product.id === id).quantity;
   const product = listItemCart.find(product => product.id === id);
   if(product){
-    product.buy_quantity += 1;
+    if(product.buy_quantity < quantityInStore){
+      product.buy_quantity += 1;
+    }
   }else{
     listItemCart.push({
       id,
@@ -28,7 +31,7 @@ const addSP = (id, buy_quantity = 1) => {
   }
 
   storeData(keyLocalStorageItemCart, listItemCart);
-  productsCountElement.textContent = getBillSummary(getData(keyLocalStorageItemCart)).get("total_quantity");
+  productsCountElement.textContent = getCartSummary(getData(keyLocalStorageItemCart)).get("total_quantity");
 }
 
 const createProductElement = ({id, photo, name, price, quantity}) => {

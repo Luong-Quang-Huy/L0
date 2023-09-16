@@ -1,12 +1,32 @@
 @import url("../share-styles.css");
 
-.bills{
+.main{
     margin: 0 auto;
     max-width: 1280px;
+}
+
+.bills{
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 3em;
+}
+
+.bills__loading{
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3em;
+}
+
+.bills-loading__status{
+    text-align: center;
+    font-size: x-large;
+    color: darkgray;
+}
+
+.bills-loading__status--fail{
+    color: red;
 }
 
 .bills__table{
@@ -80,6 +100,81 @@ tr:not(thead tr){
     align-self: start;
 }
 
+
+.bills__notification-window{
+    background-color: rgba(0, 0, 0, 0.4);
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bills__notification{
+    max-width: 768px;
+    background-color: whitesmoke;
+    border-radius: 8px;
+    box-shadow: 3px 4px 12px rgba(0, 0, 0, 0.4);
+    padding: 1em 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    top: 0;
+    gap: 2.5em;
+    animation: bills__notification--appear 0.5s ease-out;
+    transition-property: transform, top;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in;
+}
+
+.bills__notification--disappear{
+    transform: scale(0);
+    top: -50vh;
+}
+
+@keyframes bills__notification--appear {
+  from {
+    transform: scale(0);
+    top: -50vh;
+  }
+  to {
+    transform: scale(1);
+    top: 0;
+  }
+}
+
+.bills-notification__title{
+    margin-top: 1em;
+    font-size: xx-large;
+    color: #00ff00;
+}
+
+.bills-notification__title--error{
+    color: red;
+}
+
+.bills-notification__description{
+    font-size: large;
+}
+
+.bills-notification__confirm-btn{
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: larger;
+  color: white;
+  background-color: #00ff00;
+}
+
+.bills-notification__confirm-btn--error{
+    background-color: purple;
+}
+
+.bills-notification__confirm-btn:hover{
+    background-color: greenyellow;
+}
 
 
 

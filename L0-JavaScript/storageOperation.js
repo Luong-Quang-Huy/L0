@@ -116,18 +116,6 @@ export const productsData = [
 const keyLocalStorageListSP = "DANHSACHSP";
 const keyLocalStorageItemCart = "DANHSACHITEMCART";
 
-const getProductInfo = (id) => {
-  const product = productsData.find(product => product.id === id);
-  if(product){
-    const {name, photo, price} = product;
-    return ({
-      name,
-      photo,
-      price
-    });
-  }
-}
-
 const storeData = (key, value) => {
   let dataString;
   if(key === keyLocalStorageListSP){
@@ -149,4 +137,50 @@ const getData = (key) => {
   }
 };
 
-export {keyLocalStorageListSP, keyLocalStorageItemCart, getData, storeData, getProductInfo}
+const getProductInfo = (id) => {
+  const product = productsData.find((product) => product.id === id);
+  if (product) {
+    const { name, photo, price } = product;
+    return {
+      name,
+      photo,
+      price,
+    };
+  }
+};
+
+const removeItemsInStore = (cartList) => {
+  const storeList = getData(keyLocalStorageListSP);
+  cartList.forEach(cartItem => {
+    const targetItem = storeList.find(storeItem => storeItem.id === cartItem.id);
+    targetItem.quantity -= cartItem["buy_quantity"];
+  });
+  const leftoverItemsInStore = storeList.filter(item => item.quantity > 0);
+  storeData(keyLocalStorageListSP, leftoverItemsInStore);
+}
+
+const returnItemsToStore = (returnList) => {
+  const storeList = getData(keyLocalStorageListSP);
+  const runOutItems = [];
+  returnList.forEach(returnItem => {
+    const targetItem = storeList.find(storeItem => storeItem.id === returnItem.id);
+    if(targetItem){
+      targetItem.quantity += returnItem["buy_quantity"];
+    }else{
+      const {id, buy_quantity:quantity} = returnItem;
+      const {name, photo, price} =getProductInfo(id);
+      const runOutItem = {
+         id,
+         name,
+         photo,
+         price,
+         quantity
+      }
+      runOutItems.push(runOutItem);
+    }
+    const allItemsInStore = [...storeList, ...runOutItems];
+    storeData(keyLocalStorageListSP, allItemsInStore);
+  });
+}
+
+export {keyLocalStorageListSP, keyLocalStorageItemCart, getData, storeData, getProductInfo, removeItemsInStore, returnItemsToStore}
