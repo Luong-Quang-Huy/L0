@@ -1,11 +1,12 @@
 import { keyLocalStorageItemCart, getData, getProductInfo, returnItemsToStore} from "../storageOperation.js";
 import { getCartSummary } from "../utilities.js";
 import { getBills, deleteBill } from "../requestOperation.js";
+import { createDeleteNotification } from "../delete-notification/deleteNotification.js";
 
 const itemCountElement = document.body.querySelector(".cart__products-count");
 itemCountElement.textContent = getCartSummary(
   getData(keyLocalStorageItemCart)
-).get("total_quantity");
+).get("item_numbers");
 const main = document.body.querySelector(".main");
 const loadingScreen = document.createElement('div');
 const loadingSTitle = document.createElement("p");
@@ -89,6 +90,7 @@ const createBillElement = (bill) => {
     id: billId,
     customer,
     date,
+    item_numbers: itemNumbers,
     total_quantity: totalQuantity,
     total_price: totalPrice,
     items: listItem,
@@ -115,7 +117,7 @@ const createBillElement = (bill) => {
                     </td>
                     <td class="bill__customer-name">${customerName}</td>
                     <td class="bill__date">${date}</td>
-                    <td class="bill__item-numbers">${totalQuantity}</td>
+                    <td class="bill__item-numbers">${itemNumbers}</td>
                     <td class="bill__total-quantity">${totalQuantity}</td>
                     <td class="bill__total-price">$${totalPrice.toFixed(2)}</td>
                     <td><button class="bill__return-btn">
@@ -127,22 +129,31 @@ const createBillElement = (bill) => {
     detailTable.appendChild(itemElement);
   });
   const returnBtn = billElement.querySelector(".bill__return-btn");
-  returnBtn.addEventListener("click", async () => {
-    try{
-        const status = await deleteBill(billId, () => {
-            const searchParams = new URLSearchParams();
-            searchParams.append("return-success", false);
-            window.location.replace(`./bills.html?${searchParams.toString()}`);
-        });
-        if(status === "success"){
-            returnItemsToStore(listItem);
-            const searchParams = new URLSearchParams();
-            searchParams.append("return-success", true);
-            window.location.replace(`./bills.html?${searchParams.toString()}`);
+  returnBtn.addEventListener("click", () => {
+    const returnNotification = createDeleteNotification("Thông báo",`Bạn có chắc muốn xóa hóa đơn "${billId}" không? thao tác này sẽ không được hoàn tác`, 
+        async () => {
+          try {
+            const status = await deleteBill(billId, () => {
+              const searchParams = new URLSearchParams();
+              searchParams.append("return-success", false);
+              window.location.replace(
+                `./bills.html?${searchParams.toString()}`
+              );
+            });
+            if (status === "success") {
+              returnItemsToStore(listItem);
+              const searchParams = new URLSearchParams();
+              searchParams.append("return-success", true);
+              window.location.replace(
+                `./bills.html?${searchParams.toString()}`
+              );
+            }
+          } catch (error) {
+            console.error(error);
+          }
         }
-    }catch(error){
-        alert(error);
-    }
+        );
+    document.body.appendChild(returnNotification);
   });
   return billElement;
 };

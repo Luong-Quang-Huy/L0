@@ -1,0 +1,106 @@
+.notification-window{
+    background-color: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+}
+
+.notification{
+    margin-top: 1rem;
+    max-width: 640px;
+    background-color: whitesmoke;
+    border-radius: 8px;
+    box-shadow: 3px 4px 12px rgba(0, 0, 0, 0.4);
+    padding: 1em 2em;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    top: 0;
+    gap: 1.5em;
+    animation: delete__notification--appear 0.3s ease-out;
+    transition-property: top;
+    transition-duration: 0.3s;
+    transition-timing-function: ease-in;
+}
+
+.notification--disappear{
+    top: -50vh;
+}
+
+@keyframes delete__notification--appear {
+  from {
+    top: -50vh;
+  }
+  to {
+    top: 0;
+  }
+}
+
+.notification__title{
+    font-size: xx-large;
+    color: #ff0000;
+}
+
+.notification__title--error{
+    color: red;
+}
+
+.bills-notification__description{
+    font-size: large;
+    line-height: calc(1em + 0.5rem);
+}
+
+.notification__btn-wrapper{
+    display: flex;
+    align-self: end;
+    justify-content: end;
+    gap: 1em;
+}
+
+.notification__confirm-btn{
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: larger;
+  color: white;
+  background-color: #e60000;
+}
+
+.notification__confirm-btn:hover{
+    background-color: #ff0000;
+    outline: 2px solid #ff0000;
+    outline-offset: 2px;
+}
+
+.notification__confirm-btn:active{
+    background-color: #ff1a1a;
+    outline: 2px solid #ff1a1a;
+    outline-offset: 0px;
+}
+
+.notification__cancel-btn{
+    background-color: #00cc00;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: larger;
+    color: white;
+}
+
+.notification__cancel-btn:hover{
+    background-color: #1aff1a;
+    outline: 2px solid #1aff1a;
+    outline-offset: 2px;
+}
+
+.notification__cancel-btn:active{
+    background-color: #00cc00;
+    outline-offset: 0px;
+}
+
+.notification__confirm-btn:focus-visible, .notification__cancel-btn:focus-visible{
+    outline: none;
+}

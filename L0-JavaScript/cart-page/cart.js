@@ -8,6 +8,7 @@ import {
 import {getCartSummary} from "../utilities.js";
 import createFormDialog from "./formDialog.js";
 import { addBill } from "../requestOperation.js";
+import { createDeleteNotification } from "../delete-notification/deleteNotification.js";
 
 if (!localStorage.getItem(keyLocalStorageItemCart)) {
   storeData(keyLocalStorageItemCart);
@@ -17,7 +18,7 @@ const listSP = getData(keyLocalStorageListSP);
 const listItemCart = getData(keyLocalStorageItemCart);
 const productsCountElement = document.querySelector(".cart__products-count");
 const cartSummary = getCartSummary(listItemCart);
-productsCountElement.textContent = cartSummary.get("total_quantity");
+productsCountElement.textContent = cartSummary.get("item_numbers");
 const mainElement = document.body.querySelector(".main");
 
 (() => {
@@ -95,12 +96,16 @@ const getByIdSP = (id, buy_quantity) => {
 
   decreaseBtnElement.addEventListener("click", () => {
     if (buy_quantity <= 1) {
-      removeItemFromCart(id);
+      const deleteNotification = createDeleteNotification("Thông báo",`Giảm số lượng sản phẩm "${name}" xuống 0 sẽ xóa sản phẩm này khỏi giỏ hàng`, () => {
+        removeItemFromCart(id);
+        window.location.reload();
+      });
+      document.body.appendChild(deleteNotification);
     } else {
       listItemCart.find((item) => item.id === id).buy_quantity -= 1;
       storeData(keyLocalStorageItemCart, listItemCart);
+      window.location.reload();
     }
-    window.location.reload();
   });
 
   increaseBtnElement.addEventListener("click", () => {
@@ -112,8 +117,11 @@ const getByIdSP = (id, buy_quantity) => {
   });
 
   clearBtnElement.addEventListener("click", () => {
-    removeItemFromCart(id);
-    window.location.reload();
+    const deleteNotification = createDeleteNotification("Thông báo",`Thao tác này sẽ xóa sản phẩm "${name}" khỏi giỏ hàng`, () => {
+      removeItemFromCart(id);
+      window.location.reload();
+    });
+    document.body.append(deleteNotification);
   });
 
   return productElement;

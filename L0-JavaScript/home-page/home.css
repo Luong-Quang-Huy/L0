@@ -1,11 +1,8 @@
-@import url(../share-styles.css);
-
-.products{
+@import url("../share-styles.css");
+@import url("../add-notification/add-notification.css");
+.shelf{
     margin: 1.5em auto;
     max-width: 1280px;
-}
-
-.shelf{
     display: flex;
     flex-flow: row wrap;
     justify-content: center;

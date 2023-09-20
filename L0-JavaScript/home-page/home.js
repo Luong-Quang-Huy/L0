@@ -1,5 +1,6 @@
 import { keyLocalStorageListSP, keyLocalStorageItemCart, storeData, getData } from "../storageOperation.js";
 import { getCartSummary } from "../utilities.js";
+import { createAddNotificationSection, createAddNotification } from "../add-notification/addNotification.js";
 
 if(!localStorage.getItem(keyLocalStorageListSP)){
   storeData(keyLocalStorageListSP);
@@ -14,7 +15,24 @@ const listItemCart = getData(keyLocalStorageItemCart);
 const productsCountElement = document.querySelector('.cart__products-count');
 const shelfElement = document.querySelector('.shelf');
 const cartSummary = getCartSummary(listItemCart);
-productsCountElement.textContent = cartSummary.get("total_quantity");
+productsCountElement.textContent = cartSummary.get("item_numbers");
+const addNotificationSection = createAddNotificationSection();
+shelfElement.appendChild(addNotificationSection);
+
+const successAddAProductToCart = () => {
+  const addNotification = createAddNotification("Thêm sản phẩm vào giỏ hàng thành công!");
+  addNotificationSection.appendChild(addNotification);
+  setTimeout(() => {
+    addNotification.classList.add("add-notification--remove");
+  },0);
+  setTimeout(() => {
+    addNotification.remove();
+  }, 1500);
+  storeData(keyLocalStorageItemCart, listItemCart);
+  productsCountElement.textContent = getCartSummary(
+    getData(keyLocalStorageItemCart)
+  ).get("item_numbers");
+}
 
 const addSP = (id, buy_quantity = 1) => {
   const quantityInStore = listSP.find(product => product.id === id).quantity;
@@ -22,16 +40,15 @@ const addSP = (id, buy_quantity = 1) => {
   if(product){
     if(product.buy_quantity < quantityInStore){
       product.buy_quantity += 1;
+      successAddAProductToCart();
     }
   }else{
     listItemCart.push({
       id,
       buy_quantity,
     });
-  }
-
-  storeData(keyLocalStorageItemCart, listItemCart);
-  productsCountElement.textContent = getCartSummary(getData(keyLocalStorageItemCart)).get("total_quantity");
+    successAddAProductToCart();
+  } 
 }
 
 const createProductElement = ({id, photo, name, price, quantity}) => {
@@ -54,6 +71,8 @@ const createProductElement = ({id, photo, name, price, quantity}) => {
   return shoesElement;
 }
 
-listSP.forEach(shoesObj => {
+const sortedListSP = listSP.sort((item1,item2) => item1.price - item2.price);
+
+sortedListSP.forEach(shoesObj => {
     shelfElement.append(createProductElement(shoesObj));
 });

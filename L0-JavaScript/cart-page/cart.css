@@ -1,5 +1,5 @@
 @import url("../share-styles.css");
-
+@import url("../delete-notification/delete-notification.css");
 .cart {
   margin: 1em auto;
   max-width: 1280px;
@@ -90,13 +90,6 @@
   color: red;
 }
 
-.product__clear-btn:active {
-  padding: 4px 3px 3px 3px;
-  background-color: red;
-  color: white;
-  border-radius: 50%;
-}
-
 .cart__total {
   grid-column: 2/3;
   grid-row: 2/3;
@@ -148,7 +141,7 @@
   display: flex;
   align-items: start;
   justify-content: center;
-  position: absolute;
+  position: fixed;
   z-index: 2;
   inset: 0;
 }
@@ -287,7 +280,7 @@ select.buy-form__input {
 
 .cart__buy-success-wrapper {
   background-color: rgba(0, 0, 0, 0.4);
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 2;
   display: flex;

@@ -5,7 +5,7 @@
     margin: 0;
     padding: 0;
     font-family: sans-serif;
-    line-height: calc(0.5em + 0.5rem);
+    line-height: calc(1em + 0.5rem);
 }
 
 button{
@@ -84,7 +84,7 @@ button{
 
 .cart__products-count{
     display: block;
-   padding: 1px 5px;
+   padding: 0px 8px;
     border-radius: 50%;
     background-color: red;
     color: white;

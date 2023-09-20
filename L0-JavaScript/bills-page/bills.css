@@ -1,5 +1,5 @@
 @import url("../share-styles.css");
-
+@import url("../delete-notification/delete-notification.css");
 .main{
     margin: 0 auto;
     max-width: 1280px;
@@ -47,11 +47,6 @@ tr:not(thead tr){
 .bill__return-btn{
     color: red;
     font-size: large;
-}
-
-.bill__return-btn:active{
-    background-color: red;
-    color: white;
 }
 
 .bill__details{
@@ -103,7 +98,7 @@ tr:not(thead tr){
 
 .bills__notification-window{
     background-color: rgba(0, 0, 0, 0.4);
-    position: absolute;
+    position: fixed;
     inset: 0;
     z-index: 2;
     display: flex;

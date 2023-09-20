@@ -1,0 +1,29 @@
+.section-add-notification{
+    width: fit-content;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2em;
+    position: fixed;
+    top: 4em;
+    right: 1em;
+    z-index: 3;
+}
+
+.add-notification{
+    color: white;
+    background-color: #00ff00;
+    padding: 8px 12px;
+    border-radius: 4px;
+    box-shadow: 2px 1px 8px rgba(0, 0, 0, 0.4);
+    position: relative;
+    left: 0;
+    transition-property: left;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+    transition-delay: 1s;
+}
+
+.add-notification--remove{
+    left: 50vw;
+}

@@ -46,7 +46,7 @@
     font-weight: 800;
     color: var(--color-title);
     text-transform: uppercase;
-    align-self: center;
+    align-self: end;
 }
 
 .blog__description{
@@ -59,7 +59,14 @@
         padding: 0 0.5em;
     }
     .blog{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         column-gap: 0.5em;
         text-align: center;
+    }
+
+    .blog__title{
+        align-self: center;
     }
 }
