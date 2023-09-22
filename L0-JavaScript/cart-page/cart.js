@@ -35,7 +35,7 @@ const mainElement = document.body.querySelector(".main");
         <p class="cart-buy-success__notification">Lỗi máy chủ, vui lòng thử lại sau.</p>
         <button class="cart-buy-success__confirm-btn cart-buy-success__confirm-btn--error">OK</button>`
       }
-      <div>`;
+      </div>`;
       const confirmBtn = successNotificationElement.querySelector('.cart-buy-success__confirm-btn');
       confirmBtn.addEventListener('click', () => {
         successNotificationElement.querySelector('.cart__buy-success').classList.add("cart__buy-success--disappear");

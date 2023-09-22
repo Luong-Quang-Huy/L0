@@ -2,7 +2,7 @@ import { keyLocalStorageItemCart, getData} from "../storageOperation.js";
 import { getCartSummary } from "../utilities.js";
 import { randomId } from "../utilities.js";
 import { getProvinces, getDistrictsByProvinceID, getWardsByDistrictID, getLocation } from "../provincesOpenAPI.js";
-
+import createInputValidate from "../input-validate/inputValidate.js";
 const createFormDialog = (callback) => {
   const formDialog = document.createElement("section");
   formDialog.classList.add("cart__buy-window");
@@ -26,7 +26,7 @@ const createFormDialog = (callback) => {
                 <option value="0">--Chọn Phường/Xã--</option>
             </select>
             <input type="text" class="buy-form__input buy-form__input--address" placeholder="Số nhà">
-            <textarea name="message" id="message" class="buy-form__input buy-form__input--message">Lời nhắn</textarea>
+            <textarea name="message" id="message" class="buy-form__input buy-form__input--message" placeholder="Lời nhắn"></textarea>
             <p class="buy-form__error-status"></p>
             <button type="button" class="buy-form__cancel-btn">Hủy</button>
             <button type="submit" class="buy-form__submit-btn">Xác nhận</button>
@@ -53,6 +53,21 @@ const createFormDialog = (callback) => {
   const phoneInput = formDialog.querySelector(".buy-form__input--phone");
   const addressInput = formDialog.querySelector(".buy-form__input--address");
   const messageInput = formDialog.querySelector(".buy-form__input--message");
+
+  const resetInputValidateAlert = (event) => {
+    if(event.target.value == 0 || event.target.value.trim() == ""){
+       event.target.classList.add("buy-form__input--required");
+    }else{
+       event.target.classList.remove("buy-form__input--required");
+       event.target.classList.remove("buy-form__input--error");
+    }
+  };
+
+  formDialog.querySelectorAll('.buy-form__input').forEach(element => {
+    element.addEventListener('change', resetInputValidateAlert);
+  });
+
+  
 
   const createOptionElement = (name, value) => {
     const optionElement = document.createElement("option");
@@ -181,10 +196,10 @@ const createFormDialog = (callback) => {
     yield checkEmailPatternIsValid;
 
     let checkPhoneNumberIsValid = true;
-    const phoneRegex = /^[+]?[0-9]+$/;
+    const phoneRegex = /^(\+84|0084|0)\d{9}$/;
     if (!phoneRegex.test(phoneInput.value)) {
       phoneInput.classList.add("buy-form__input--error");
-      errorStatusElement.textContent = "SĐT chỉ được chứa chữ số và có thể bắt đầu bằng kí tự +";
+      errorStatusElement.textContent = "SĐT bắt đầu bằng +84|0084|0 - kèm theo 9 chữ số";
       checkPhoneNumberIsValid = false;
     } else {
       phoneInput.classList.remove("buy-form__input--error");

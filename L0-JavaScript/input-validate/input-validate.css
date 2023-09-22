@@ -1,0 +1,56 @@
+.input-validate{
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5em;
+}
+
+.input-validate label{
+    font-size: smaller;
+}
+
+.input-validate .label--required::before{
+    content: "*";
+    color: red;
+    font-size: larger;
+}
+
+.input-validate .input{
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid gray;
+    border-radius: 4px;
+}
+
+.input-validate:focus{
+    border: none;
+}
+
+.input-validate input:focus-visible{
+    outline: 2px solid #66ffff;
+    border: none;
+}
+
+.input-validate .input--required{
+    border-color: #ff944d;
+}
+
+.input-validate .input--required:focus-visible{
+    outline-color: #ff944d;
+}
+
+.input-validate .input--error{
+    color: red;
+    border-color: red;
+}
+
+.input-validate .input--error:focus-visible{
+    outline-color: red;
+}
+
+.input-validate .error-alert{
+    color: red;
+}
+
+.input-validate .hide{
+    visibility: hidden;
+}

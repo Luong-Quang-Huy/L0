@@ -1,1 +1,1 @@
-### Bắt đầu từ file index.html please
+### Bật VSCODE chạy bằng Live Server

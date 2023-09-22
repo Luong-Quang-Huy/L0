@@ -1,6 +1,6 @@
 import { keyLocalStorageListSP, keyLocalStorageItemCart, storeData, getData } from "../storageOperation.js";
 import { getCartSummary } from "../utilities.js";
-import { createAddNotificationSection, createAddNotification } from "../add-notification/addNotification.js";
+import { createNotification, createNotificationSection } from "../notification/notifiction.js";
 
 if(!localStorage.getItem(keyLocalStorageListSP)){
   storeData(keyLocalStorageListSP);
@@ -16,18 +16,18 @@ const productsCountElement = document.querySelector('.cart__products-count');
 const shelfElement = document.querySelector('.shelf');
 const cartSummary = getCartSummary(listItemCart);
 productsCountElement.textContent = cartSummary.get("item_numbers");
-const addNotificationSection = createAddNotificationSection();
-shelfElement.appendChild(addNotificationSection);
+const notificationSection = createNotificationSection();
+shelfElement.appendChild(notificationSection);
 
-const successAddAProductToCart = () => {
-  const addNotification = createAddNotification("Thêm sản phẩm vào giỏ hàng thành công!");
-  addNotificationSection.appendChild(addNotification);
+const addAProductToCart = (content, type="success") => {
+  const notification = createNotification(content, type);
+  notificationSection.appendChild(notification);
   setTimeout(() => {
-    addNotification.classList.add("add-notification--remove");
+    notification.classList.add("notification--remove");
   },0);
   setTimeout(() => {
-    addNotification.remove();
-  }, 1500);
+    notification.remove();
+  }, 2300);
   storeData(keyLocalStorageItemCart, listItemCart);
   productsCountElement.textContent = getCartSummary(
     getData(keyLocalStorageItemCart)
@@ -40,14 +40,16 @@ const addSP = (id, buy_quantity = 1) => {
   if(product){
     if(product.buy_quantity < quantityInStore){
       product.buy_quantity += 1;
-      successAddAProductToCart();
+      addAProductToCart("Thêm sản phẩm thàng thành công!");
+    }else{
+      addAProductToCart("Sản phẩm này đã đạt số lượng giới hạn!", "error");
     }
   }else{
     listItemCart.push({
       id,
       buy_quantity,
     });
-    successAddAProductToCart();
+    addAProductToCart("Thêm sản phẩm vào giỏ hàng thành công!");
   } 
 }
 

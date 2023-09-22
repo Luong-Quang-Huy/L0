@@ -1,5 +1,6 @@
 @import url("../share-styles.css");
 @import url("../delete-notification/delete-notification.css");
+@import url("../input-validate/input-validate.css");
 .cart {
   margin: 1em auto;
   max-width: 1280px;
@@ -207,12 +208,12 @@
 
 .buy-form__input--required {
   border-color: #ff944d;
-  border-width: 3px;
+  border-width: 2px;
 }
 
 .buy-form__input--error {
   border-color: red;
-  border-width: 3px;
+  border-width: 2px;
 }
 
 .buy-form__input:focus-visible {
@@ -293,14 +294,14 @@ select.buy-form__input {
   background-color: whitesmoke;
   border-radius: 8px;
   box-shadow: 3px 4px 12px rgba(0, 0, 0, 0.4);
-  padding: 1em 30px;
+  padding: 2em;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
   top: 0;
-  gap: 2.5em;
+  gap: 1.5em;
   animation: cart__buy-success--appear 0.5s ease-out;
   transition-property: transform, top;
   transition-duration: 0.5s;
@@ -324,7 +325,6 @@ select.buy-form__input {
 }
 
 .cart-buy-success__title {
-  margin-top: 1em;
   font-size: xx-large;
   color: #00ff00;
 }
