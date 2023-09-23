@@ -145,6 +145,7 @@
   position: fixed;
   z-index: 2;
   inset: 0;
+  overflow: scroll;
 }
 
 .buy-form {
@@ -152,7 +153,7 @@
   width: 100%;
   max-width: 768px;
   background-color: white;
-  padding: 1.5em 0.25em 1.5em 1em;
+  padding: 1em;
   border-radius: 4px;
   box-shadow: 2px 4px 5px rgba(0, 0, 0, 0.3);
   animation: scale-up 0.5s ease-in-out;
@@ -188,41 +189,8 @@
   color: red;
 }
 
-.buy-form__label {
-  font-size: smaller;
-}
-
-.buy-form__label::after {
-  content: "*";
-  color: red;
-  font-size: larger;
-}
-
 .buy-form__input {
-  width: 100%;
-  padding: 6px 8px;
-  border: 1px solid gray;
-  border-radius: 4px;
   grid-column: 1/7;
-}
-
-.buy-form__input--required {
-  border-color: #ff944d;
-  border-width: 2px;
-}
-
-.buy-form__input--error {
-  border-color: red;
-  border-width: 2px;
-}
-
-.buy-form__input:focus-visible {
-  outline: 3px solid #66ffff;
-  border: none;
-}
-
-.buy-form__label {
-  grid-column: span 7;
 }
 
 .buy-form__input--last-name {
@@ -233,24 +201,14 @@
   grid-column: span 3;
 }
 
-select.buy-form__input {
+.buy-form__input--select {
   grid-column: span 2;
 }
 
 .buy-form__input--message {
   height: 150px;
+  width: 100%;
   resize: none;
-}
-
-.buy-form__error-status {
-  color: red;
-  grid-column: span 4;
-}
-
-.buy-form__error-status::before {
-  content: "*";
-  font-size: larger;
-  color: red;
 }
 
 .buy-form__cancel-btn {

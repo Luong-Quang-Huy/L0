@@ -1,14 +1,15 @@
 .input-validate{
     display: flex;
     flex-direction: column;
-    row-gap: 0.5em;
+    row-gap: 4px;
 }
 
 .input-validate label{
+    margin-left: 4px;
     font-size: smaller;
 }
 
-.input-validate .label--required::before{
+.input-validate .label--required::after{
     content: "*";
     color: red;
     font-size: larger;
@@ -17,16 +18,16 @@
 .input-validate .input{
     width: 100%;
     padding: 6px 8px;
-    border: 1px solid gray;
+    border: 1px solid lightgray;
     border-radius: 4px;
 }
 
-.input-validate:focus{
+.input-validate .input:focus{
     border: none;
 }
 
-.input-validate input:focus-visible{
-    outline: 2px solid #66ffff;
+.input-validate .input:focus-visible{
+    outline: 4px solid #66ffff;
     border: none;
 }
 
@@ -44,13 +45,14 @@
 }
 
 .input-validate .input--error:focus-visible{
-    outline-color: red;
+    outline-color: #ff0000;
 }
 
 .input-validate .error-alert{
     color: red;
+    font-size: small;
 }
 
 .input-validate .hide{
-    visibility: hidden;
+    display: none;
 }

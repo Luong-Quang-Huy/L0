@@ -1,3 +1,32 @@
 {
-  "bills": []
+  "bills": [
+    {
+      "id": "vxgehlasds",
+      "date": "06:58:46 23/9/2023",
+      "address": "69/Phường Tương Giang-Thành phố Từ Sơn-Tỉnh Bắc Ninh",
+      "total_price": 640,
+      "item_numbers": 3,
+      "total_quantity": 5,
+      "items": [
+        {
+          "id": 1,
+          "buy_quantity": 2
+        },
+        {
+          "id": 3,
+          "buy_quantity": 2
+        },
+        {
+          "id": 9,
+          "buy_quantity": 1
+        }
+      ],
+      "customer": {
+        "name": "Luong Quang Huy",
+        "email": "quanghuy060699@gmail.com",
+        "phone": "0389695744"
+      },
+      "message": "concac"
+    }
+  ]
 }
