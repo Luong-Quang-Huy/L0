@@ -1,4 +1,4 @@
-const url = "http://localhost:3000/bills";
+import { billsUrl as url } from "./const.js";
 
 const getBills = async (handleError) => {
     try{

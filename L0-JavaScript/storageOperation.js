@@ -1,4 +1,5 @@
-export const productsData = [
+import { keyLocalStorageListSP, keyLocalStorageItemCart } from "./const.js";
+const productsData = [
   {
     id: 1,
     name: "NIKE AIR HURACHE PRM",
@@ -112,9 +113,6 @@ export const productsData = [
     quantity: 14,
   },
 ];
-
-const keyLocalStorageListSP = "DANHSACHSP";
-const keyLocalStorageItemCart = "DANHSACHITEMCART";
 
 const storeData = (key, value) => {
   let dataString;

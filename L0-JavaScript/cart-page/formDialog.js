@@ -1,10 +1,14 @@
-import { keyLocalStorageItemCart, getData} from "../storageOperation.js";
-import { getCartSummary } from "../utilities.js";
-import { randomId } from "../utilities.js";
-import { getProvinces, getDistrictsByProvinceID, getWardsByDistrictID, getLocation } from "../provincesOpenAPI.js";
+import { keyLocalStorageItemCart, getData } from "../storageOperation.js";
+import { getCartSummary, randomId } from "../utilities.js";
+import {
+  getProvinces,
+  getDistrictsByProvinceID,
+  getWardsByDistrictID,
+  getLocation,
+} from "../provincesOpenAPI.js";
 import createInputValidate from "../input-validate/inputValidate.js";
 
-const createFormDialog = (callback) => {
+const createFormDialog = (handleAddBill) => {
   const formDialog = document.createElement("section");
   formDialog.classList.add("cart__buy-window");
   formDialog.innerHTML = `<form action="" class="buy-form">
@@ -17,7 +21,7 @@ const createFormDialog = (callback) => {
   const cancelBtnElement = document.createElement("button");
   const submitBtnElement = document.createElement("button");
   cancelBtnElement.classList.add("buy-form__cancel-btn");
-  cancelBtnElement.setAttribute("type","button");
+  cancelBtnElement.setAttribute("type", "button");
   cancelBtnElement.textContent = "Hủy";
   submitBtnElement.classList.add("buy-form__submit-btn");
   submitBtnElement.textContent = "Xác nhận";
@@ -26,19 +30,27 @@ const createFormDialog = (callback) => {
     type: "input",
     placeHolder: "Họ",
     regex: /^[A-Z][a-z]*$/,
-    invalidText: "Họ chứa chữ cái không dấu, chỉ có một từ, bắt đầu bằng chữa in hoa",
+    invalidText:
+      "Họ chứa chữ cái không dấu, chỉ có một từ, bắt đầu bằng chữa in hoa",
     isRequired: true,
   });
-  lastNameValidateElement.classList.add("buy-form__input","buy-form__input--last-name");
+  lastNameValidateElement.classList.add(
+    "buy-form__input",
+    "buy-form__input--last-name"
+  );
   const [firstNameValidateElement, checkFirstName] = createInputValidate({
     labelText: "Tên",
     type: "name-input",
     placeHolder: "Tên",
     regex: /^[A-Z][a-z]*$/,
-    invalidText: "Tên chỉ chứa chữ cái không dấu,có thể có nhiều từ, mỗi từ bắt đầu bằng chữa in hoa",
+    invalidText:
+      "Tên chỉ chứa chữ cái không dấu,có thể có nhiều từ, mỗi từ bắt đầu bằng chữa in hoa",
     isRequired: true,
   });
-  firstNameValidateElement.classList.add("buy-form__input","buy-form__input--first-name");
+  firstNameValidateElement.classList.add(
+    "buy-form__input",
+    "buy-form__input--first-name"
+  );
   const [emailValidateElement, checkEmail] = createInputValidate({
     labelText: "Email",
     type: "input",
@@ -54,7 +66,7 @@ const createFormDialog = (callback) => {
     placeHolder: "Số điện thoại",
     regex: /^(\+84|0084|0)\d{9}$/,
     invalidText: "SĐT bắt đầu bằng +84|0084|0 - kèm theo 9 chữ số",
-    isRequired: true
+    isRequired: true,
   });
   phoneValidateElement.classList.add("buy-form__input");
   const [addressValidateElement, checkAddress] = createInputValidate({
@@ -68,15 +80,15 @@ const createFormDialog = (callback) => {
   const [messageValidateElement] = createInputValidate({
     type: "textarea",
     placeHolder: "Lời nhắn",
-    isRequired: false
+    isRequired: false,
   });
   messageValidateElement.classList.add("buy-form__input");
-  const lastNameInput = lastNameValidateElement.querySelector('input');
-  const firstNameInput = firstNameValidateElement.querySelector('input');
-  const emailInput = emailValidateElement.querySelector('input');
-  const phoneInput = phoneValidateElement.querySelector('input');
-  const addressInput = addressValidateElement.querySelector('input');
-  const messageInput = messageValidateElement.querySelector('textarea');
+  const lastNameInput = lastNameValidateElement.querySelector("input");
+  const firstNameInput = firstNameValidateElement.querySelector("input");
+  const emailInput = emailValidateElement.querySelector("input");
+  const phoneInput = phoneValidateElement.querySelector("input");
+  const addressInput = addressValidateElement.querySelector("input");
+  const messageInput = messageValidateElement.querySelector("textarea");
   messageInput.classList.add("buy-form__input--message");
   const [selectProvinceValidate, checkProvince] = createInputValidate({
     labelText: "Province",
@@ -84,14 +96,14 @@ const createFormDialog = (callback) => {
     isRequired: true,
   });
   selectProvinceValidate.classList.add("buy-form__input--select");
-  const selectProvinceElement = selectProvinceValidate.querySelector('select');
+  const selectProvinceElement = selectProvinceValidate.querySelector("select");
   const [selectDistrictValidate, checkDistrict] = createInputValidate({
     labelText: "Disctrict",
     type: "select",
-    isRequired: true
+    isRequired: true,
   });
   selectDistrictValidate.classList.add("buy-form__input--select");
-  const selectDistrictElement = selectDistrictValidate.querySelector('select');
+  const selectDistrictElement = selectDistrictValidate.querySelector("select");
   selectDistrictElement.innerHTML = `<option value="0">--ChọnHuyện/Quận--</option>`;
   const [selectWardValidate, checkWard] = createInputValidate({
     labelText: "Ward",
@@ -99,10 +111,11 @@ const createFormDialog = (callback) => {
     isRequired: true,
   });
   selectWardValidate.classList.add("buy-form__input--select");
-  const selectWardElement = selectWardValidate.querySelector('select');
+  const selectWardElement = selectWardValidate.querySelector("select");
   selectWardElement.innerHTML = `<option value="0">--Chọn Phường/Xã--</option>`;
 
-  buyFormElement.append(lastNameValidateElement,
+  buyFormElement.append(
+    lastNameValidateElement,
     firstNameValidateElement,
     emailValidateElement,
     phoneValidateElement,
@@ -113,7 +126,7 @@ const createFormDialog = (callback) => {
     messageValidateElement,
     cancelBtnElement,
     submitBtnElement
-    );
+  );
 
   const createOptionElement = (name, value) => {
     const optionElement = document.createElement("option");
@@ -122,20 +135,7 @@ const createFormDialog = (callback) => {
     return optionElement;
   };
 
-  (async () => {
-    try {
-      const provinces = await getProvinces();
-      selectProvinceElement.innerHTML = `<option value="0">--Chọn Tỉnh/Thành phố--</option>`;
-      provinces.forEach((province) => {
-        const option = createOptionElement(province.name, province.code);
-        selectProvinceElement.appendChild(option);
-      });
-    } catch (error) {
-      errorStatusElement.textContent = error;
-    }
-  })();
-
-  selectProvinceElement.addEventListener("change", (e) => {
+  const handleProvinceChange = (e) => {
     const resetSelect = () => {
       selectDistrictElement.disabled = false;
       selectWardElement.disabled = false;
@@ -164,9 +164,9 @@ const createFormDialog = (callback) => {
     } else {
       resetSelect();
     }
-  });
+  };
 
-  selectDistrictElement.addEventListener("change", (e) => {
+  const handleDistrictChange = (e) => {
     const resetSelect = () => {
       selectWardElement.disabled = false;
       selectWardElement.innerHTML = `<option value="0">--Chọn Phường/Xã--</option>`;
@@ -191,9 +191,9 @@ const createFormDialog = (callback) => {
     } else {
       resetSelect();
     }
-  });
+  };
 
-  const validateInputs =() => {
+  const validateInputs = () => {
     const checkInputResults = [];
     checkInputResults.push(checkLastName());
     checkInputResults.push(checkFirstName());
@@ -203,8 +203,10 @@ const createFormDialog = (callback) => {
     checkInputResults.push(checkDistrict());
     checkInputResults.push(checkWard());
     checkInputResults.push(checkAddress());
-    return checkInputResults.every(checkResult => checkResult) ? "pass" : "fail";
-  }
+    return checkInputResults.every((checkResult) => checkResult)
+      ? "pass"
+      : "fail";
+  };
 
   const handleSubmit = async () => {
     submitBtnElement.textContent = "Sending...";
@@ -221,8 +223,12 @@ const createFormDialog = (callback) => {
     const totalPrice = cartSummary.get("total_price");
     const itemNumbers = cartSummary.get("item_numbers");
     const totalQuantity = cartSummary.get("total_quantity");
-    try{
-      const [provinceName, districtName, wardName] = await getLocation(selectProvinceElement.value, selectDistrictElement.value, selectWardElement.value);
+    try {
+      const [provinceName, districtName, wardName] = await getLocation(
+        selectProvinceElement.value,
+        selectDistrictElement.value,
+        selectWardElement.value
+      );
       const address = `${addressInput.value}/${wardName}-${districtName}-${provinceName}`;
 
       const bill = {
@@ -233,38 +239,49 @@ const createFormDialog = (callback) => {
         item_numbers: itemNumbers,
         total_quantity: totalQuantity,
         items: listCartItem,
-        customer: { 
+        customer: {
           name,
           email,
           phone: phoneNumber,
-       },
+        },
       };
       if (message) {
         bill.message = message;
       }
+      handleAddBill(bill);
 
-      callback(bill);
-      submitBtnElement.textContent = "Xác nhận";
-      submitBtnElement.disabled = false;
-
-    }catch(error){
-      errorStatusElement.textContent = error;
+    } catch (error) {
+      
     }
   };
 
-  exitBtnElement.addEventListener("click", () => {
+  const closeFormDialog = () => {
     formDialog.remove();
-  });
-  cancelBtnElement.addEventListener("click", () => {
-    formDialog.remove();
-  });
+  };
 
+  (async () => {
+    try {
+      const provinces = await getProvinces();
+      selectProvinceElement.innerHTML = `<option value="0">--Chọn Tỉnh/Thành phố--</option>`;
+      provinces.forEach((province) => {
+        const option = createOptionElement(province.name, province.code);
+        selectProvinceElement.appendChild(option);
+      });
+    } catch (error) {
+      errorStatusElement.textContent = error;
+    }
+  })();
+
+  selectProvinceElement.addEventListener("change", handleProvinceChange);
+  selectDistrictElement.addEventListener("change", handleDistrictChange);
+  exitBtnElement.addEventListener("click", closeFormDialog);
+  cancelBtnElement.addEventListener("click", closeFormDialog);
   submitBtnElement.addEventListener("click", (e) => {
-   e.preventDefault();
-   const check = validateInputs();
-   if(check === "pass"){
+    e.preventDefault();
+    const check = validateInputs();
+    if (check === "pass") {
       handleSubmit();
-   }
+    }
   });
 
   return formDialog;

@@ -1,4 +1,4 @@
-const baseURL = "https://provinces.open-api.vn/api";
+import { provincesAPI_URL as baseURL } from "./const.js";
 
 const getProvinces = async () => {
   try {
@@ -11,7 +11,7 @@ const getProvinces = async () => {
       throw Error(`Error: ${response.status}`);
     }
   } catch (error) {
-    return error;
+    console.error(error);
   }
 };
 
@@ -28,7 +28,7 @@ const getDistrictsByProvinceID = async (provinceID) => {
       throw Error(`Error: ${response.status}`);
     }
   } catch (error) {
-    return error;
+    console.error(error);
   }
 };
 
@@ -43,7 +43,7 @@ const getWardsByDistrictID = async (districtID) => {
       throw Error(`Error: ${response.status}`);
     }
   } catch (error) {
-    return error;
+    console.error(error);
   }
 };
 
@@ -90,7 +90,7 @@ const getLocation = async (provinceId, districtId, wardId) => {
     const location = await result;
     return location;
   } catch (error) {
-    return error;
+    console.error(error);
   }
 };
 

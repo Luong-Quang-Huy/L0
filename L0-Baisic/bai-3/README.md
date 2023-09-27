@@ -1,1 +1,1 @@
-### Bật VSCODE chạy bằng Live Server
+### Em tìm mãi không thấy video review ở đâu, bài này em chạy trên máy em vẫn ok bình thường. có gì a quay lại video hoặc chụp màn hình console giúp em

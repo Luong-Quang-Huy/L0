@@ -21,7 +21,7 @@ loadingScreen.insertAdjacentHTML(
 );
 main.appendChild(loadingScreen);
 
-const createNotification = (type) => {
+const createNotification = (notificationType) => {
     const notificationWindow = document.createElement('div');
     notificationWindow.classList.add("bills__notification-window");
     const notification = document.createElement('div');
@@ -43,12 +43,12 @@ const createNotification = (type) => {
             notificationWindow.remove();
         },500);
     });
-    if(type === "fail"){
+    if(notificationType === "fail"){
         title.classList.add("bills-notification__title--error");
         title.textContent = "Trả hàng không thành công!";
         description.textContent = "Lỗi máy chủ, vui lòng thử lại sau";
         confirmButton.classList.add("bills-notification__confirm-btn--error");
-    }else if(type==="success"){
+    }else if(notificationType==="success"){
         title.textContent = "Trả hàng thành công!";
         description.textContent = "Giao dịch đã được hủy, các sản phẩm đã được trả lại cho shop";
     }
@@ -68,10 +68,10 @@ const createNotification = (type) => {
     }
 })();
 
-const createItemElement = (id, buy_quantity) => {
+const createItemElement = (id, buyQuantity) => {
   const {photo, name, price} = getProductInfo(id);
   const item = document.createElement("tr");
-  const totalPrice = price * buy_quantity;
+  const totalPrice = price * buyQuantity;
   item.classList.add("product");
   item.innerHTML = `<td>
                         <div class="product__info">
@@ -79,7 +79,7 @@ const createItemElement = (id, buy_quantity) => {
                             <h4 class="product__name">${name}</h4>
                         </div>
                     </td>
-                    <td class="product__quantity">${buy_quantity}</td>
+                    <td class="product__quantity">${buyQuantity}</td>
                     <td class="product__subtotal">$${price.toFixed(2)}</td>
                     <td class="product__total">$${totalPrice.toFixed(2)}</td>`;
   return item;
@@ -129,32 +129,33 @@ const createBillElement = (bill) => {
     detailTable.appendChild(itemElement);
   });
   const returnBtn = billElement.querySelector(".bill__return-btn");
-  returnBtn.addEventListener("click", () => {
-    const returnNotification = createDeleteNotification("Thông báo",`Bạn có chắc muốn xóa hóa đơn "${billId}" không? thao tác này sẽ không được hoàn tác`, 
-        async () => {
-          try {
-            const status = await deleteBill(billId, () => {
-              const searchParams = new URLSearchParams();
-              searchParams.append("return-success", false);
-              window.location.replace(
-                `./bills.html?${searchParams.toString()}`
-              );
-            });
-            if (status === "success") {
-              returnItemsToStore(listItem);
-              const searchParams = new URLSearchParams();
-              searchParams.append("return-success", true);
-              window.location.replace(
-                `./bills.html?${searchParams.toString()}`
-              );
-            }
-          } catch (error) {
-            console.error(error);
+  
+  const handleReturnProducts = () => {
+    const returnNotification = createDeleteNotification(
+      "Thông báo",
+      `Bạn có chắc muốn xóa hóa đơn "${billId}" không? thao tác này sẽ không được hoàn tác`,
+      async () => {
+        try {
+          const status = await deleteBill(billId, () => {
+            const searchParams = new URLSearchParams();
+            searchParams.append("return-success", false);
+            window.location.replace(`./bills.html?${searchParams.toString()}`);
+          });
+          if (status === "success") {
+            returnItemsToStore(listItem);
+            const searchParams = new URLSearchParams();
+            searchParams.append("return-success", true);
+            window.location.replace(`./bills.html?${searchParams.toString()}`);
           }
+        } catch (error) {
+          console.error(error);
         }
-        );
+      }
+    );
     document.body.appendChild(returnNotification);
-  });
+  };
+
+  returnBtn.addEventListener("click",handleReturnProducts);
   return billElement;
 };
 
