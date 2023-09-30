@@ -1,49 +1,57 @@
 import { billsUrl as url } from "./const.js";
 
-const getBills = async (handleError) => {
-    try{
+const getBills = (handleBills, handleError) => {
+    (async () => {
+        try{
         const result = fetch(url);
         const response = await result;
         if(response.ok){
             const bills = await response.json();
-            return bills;
+            handleBills(bills);
         }
     }catch(error){
-        console.error(error);
         handleError();
     }
-}
+})();
+};
 
-const addBill = async (bill, handleError) => {
-    try{
-        const result = fetch(url, {
+const addBill = (bill, handleSuccess, handleError) => {
+    (async () => {
+        try {
+          const result = fetch(url, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
+              "Content-Type": "application/json",
             },
             body: JSON.stringify(bill),
-        });
-        const response = await result;
-        if(response.ok){
-            return "success";
+          });
+          const response = await result;
+          if (response.ok) {
+            handleSuccess();
+          } else {
+            throw Error(`Error: ${response.status}`);
+          }
+        } catch (error) {
+          alert(error);
+          handleError();
         }
-    }catch(error){
-        console.error(error);
-        handleError();
-    }
+    })();
 }
 
-const deleteBill = async (id, handleError) => {
-    try{
+const deleteBill = (id, handleSuccess, handleError) => {
+    (async () => {
+        try{
         const result = fetch(`${url}/${id}`, {method: "DELETE"});
         const response = await result;
-        if(response.ok){
-            return "success";
+        if (response.ok) {
+          handleSuccess();
+        } else {
+          throw Error(`Error: ${response.status}`);
         }
     }catch(error){
-        console.error(error);
         handleError();
     }
+    })();
 }
 
 export {getBills, addBill, deleteBill}

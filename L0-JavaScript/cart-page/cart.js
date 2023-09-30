@@ -3,22 +3,21 @@ import {
   keyLocalStorageItemCart,
   storeData,
   getData,
+  setupData,
   removeItemsInStore,
 } from "../storageOperation.js";
-import { getCartSummary } from "../utilities.js";
+import { getTotal } from "../utilities.js";
 import createFormDialog from "./formDialog.js";
 import { addBill } from "../requestOperation.js";
 import { createDeleteNotification } from "../delete-notification/deleteNotification.js";
 
-if (!localStorage.getItem(keyLocalStorageItemCart)) {
-  storeData(keyLocalStorageItemCart);
-}
-
+setupData();
 const listSP = getData(keyLocalStorageListSP);
 const listItemCart = getData(keyLocalStorageItemCart);
 const productsCountElement = document.querySelector(".cart__products-count");
-const cartSummary = getCartSummary(listItemCart);
-productsCountElement.textContent = cartSummary.get("item_numbers");
+const getItemNumbersInCart = getTotal(listItemCart);
+const getCartTotalPrice = getTotal(listItemCart, "price");
+productsCountElement.textContent = getItemNumbersInCart();
 const mainElement = document.body.querySelector(".main");
 
 (() => {
@@ -153,23 +152,21 @@ const getByIdSP = (id, buyQuantity) => {
   return productElement;
 };
 
-const handleAddBill = async (bill) => {
-  try {
-    const status = await addBill(bill, () => {
-      const searchPrams = new URLSearchParams();
-      searchPrams.append("buy-success", "fail");
-      window.location.replace(`./cart.html?${searchPrams.toString()}`);
-    });
-    if (status === "success") {
+const handleAddBill = (bill) => {
+  addBill(bill,
+    () => {
       removeItemsInStore(bill.items);
       storeData(keyLocalStorageItemCart, []);
       const searchPrams = new URLSearchParams();
-      searchPrams.append("buy-success", status);
+      searchPrams.append("buy-success", "success");
+      window.location.replace(`./cart.html?${searchPrams.toString()}`);
+    },
+    () => {
+      const searchPrams = new URLSearchParams();
+      searchPrams.append("buy-success", "fail");
       window.location.replace(`./cart.html?${searchPrams.toString()}`);
     }
-  } catch (error) {
-    console.error(error);
-  }
+  );
 };
 
 const renderCart = () => {
@@ -207,7 +204,7 @@ const renderCart = () => {
     const productsElement = document.querySelector(".products");
     const totalElement = document.querySelector(".cart__total");
     const buyBtnElement = document.querySelector(".cart__buy-btn");
-    totalElement.textContent = cartSummary.get("total_price").toFixed(2);
+    totalElement.textContent = getCartTotalPrice().toFixed(2);
 
     const openFormDialog = () => {
       const formDialogElement = createFormDialog(handleAddBill);
@@ -216,7 +213,7 @@ const renderCart = () => {
 
     buyBtnElement.addEventListener("click", openFormDialog);
 
-    listItemCart.forEach(({ id, buy_quantity: buyQuantity}) => {
+    listItemCart.forEach(({ id, buy_quantity: buyQuantity }) => {
       productsElement.append(getByIdSP(id, buyQuantity));
     });
   }

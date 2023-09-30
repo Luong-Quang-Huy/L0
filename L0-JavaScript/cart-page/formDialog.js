@@ -1,5 +1,6 @@
 import { keyLocalStorageItemCart, getData } from "../storageOperation.js";
-import { getCartSummary, randomId } from "../utilities.js";
+import { getTotal, randomId } from "../utilities.js";
+import { vietnameseNameRegex } from "../const.js";
 import {
   getProvinces,
   getDistrictsByProvinceID,
@@ -29,9 +30,8 @@ const createFormDialog = (handleAddBill) => {
     labelText: "Họ",
     type: "input",
     placeHolder: "Họ",
-    regex: /^[A-Z][a-z]*$/,
-    invalidText:
-      "Họ chứa chữ cái không dấu, chỉ có một từ, bắt đầu bằng chữa in hoa",
+    regex: vietnameseNameRegex,
+    invalidText: "Họ chứa chữ cái, chỉ có một từ, bắt đầu bằng chữa in hoa",
     isRequired: true,
   });
   lastNameValidateElement.classList.add(
@@ -42,9 +42,9 @@ const createFormDialog = (handleAddBill) => {
     labelText: "Tên",
     type: "name-input",
     placeHolder: "Tên",
-    regex: /^[A-Z][a-z]*$/,
+    regex: vietnameseNameRegex,
     invalidText:
-      "Tên chỉ chứa chữ cái không dấu,có thể có nhiều từ, mỗi từ bắt đầu bằng chữa in hoa",
+      "Tên chỉ chứa chữ cái,có thể có nhiều từ, mỗi từ bắt đầu bằng chữa in hoa",
     isRequired: true,
   });
   firstNameValidateElement.classList.add(
@@ -135,61 +135,65 @@ const createFormDialog = (handleAddBill) => {
     return optionElement;
   };
 
+  const handleProvinces = (provinces) => {
+    selectProvinceElement.innerHTML = `<option value="0">--Chọn Tỉnh/Thành phố--</option>`;
+    provinces.forEach((province) => {
+      const option = createOptionElement(province.name, province.code);
+      selectProvinceElement.appendChild(option);
+    });
+  };
+
+  const resetDistrictValue = () => {
+    selectDistrictElement.disabled = false;
+    selectDistrictElement.innerHTML = `<option value="0">--Chọn Huyện/Quận--</option>`;
+  };
+
+  const resetWardValue = () => {
+    selectWardElement.disabled = false;
+    selectWardElement.innerHTML = `<option value="0">--Chọn Phường/Xã--</option>`;
+  };
+
+  const handleDistricts = (districts) => {
+    resetDistrictValue();
+    resetWardValue();
+    districts.forEach((district) => {
+      const option = createOptionElement(district.name, district.code);
+      selectDistrictElement.appendChild(option);
+    });
+  };
+
+  const handleWards = (wards) => {
+    resetWardValue();
+    wards.forEach((ward) => {
+      const option = createOptionElement(ward.name, ward.code);
+      selectWardElement.appendChild(option);
+    });
+  };
+
   const handleProvinceChange = (e) => {
-    const resetSelect = () => {
-      selectDistrictElement.disabled = false;
-      selectWardElement.disabled = false;
-      selectDistrictElement.innerHTML = `<option value="0">--Chọn Huyện/Quận--</option>`;
-      selectWardElement.innerHTML = `<option value="0">--Chọn Phường/Xã--</option>`;
-    };
     const id = Number(e.target.value);
     if (id) {
       selectDistrictElement.disabled = true;
       selectWardElement.disabled = true;
       selectDistrictElement.innerHTML = `<option value="-1">Loading...<option>`;
       selectWardElement.innerHTML = `<option value="-1">Loading...<option>`;
-      (async () => {
-        try {
-          const districts = await getDistrictsByProvinceID(id);
-          resetSelect();
-          districts.forEach((district) => {
-            const option = createOptionElement(district.name, district.code);
-            selectDistrictElement.appendChild(option);
-          });
-        } catch (error) {
-          errorStatusElement.textContent = error;
-          resetSelect();
-        }
-      })();
+      getDistrictsByProvinceID(id, handleDistricts, (error) =>
+        console.error(error)
+      );
     } else {
-      resetSelect();
+      resetDistrictValue();
+      resetWardValue();
     }
   };
 
   const handleDistrictChange = (e) => {
-    const resetSelect = () => {
-      selectWardElement.disabled = false;
-      selectWardElement.innerHTML = `<option value="0">--Chọn Phường/Xã--</option>`;
-    };
     const id = Number(e.target.value);
     if (id) {
       selectWardElement.disabled = true;
       selectWardElement.innerHTML = `<option value="-1">Loading...<option>`;
-      (async () => {
-        try {
-          const wards = await getWardsByDistrictID(id);
-          resetSelect();
-          wards.forEach((ward) => {
-            const option = createOptionElement(ward.name, ward.code);
-            selectWardElement.appendChild(option);
-          });
-        } catch (error) {
-          errorStatusElement.textContent = error;
-          resetSelect();
-        }
-      })();
+      getWardsByDistrictID(id, handleWards, (error) => console.error(error));
     } else {
-      resetSelect();
+      resetWardValue();
     }
   };
 
@@ -208,69 +212,59 @@ const createFormDialog = (handleAddBill) => {
       : "fail";
   };
 
-  const handleSubmit = async () => {
-    submitBtnElement.textContent = "Sending...";
-    submitBtnElement.disabled = true;
+  const handleSubmit = (location) => {
+    const [provinceName, districtName, wardName] = location;
     const id = randomId(10);
     const now = new Date();
     const dateString = now.toLocaleString();
+    const address = `${addressInput.value}/${wardName}-${districtName}-${provinceName}`;
     const name = `${lastNameInput.value} ${firstNameInput.value}`;
     const email = emailInput.value;
     const phoneNumber = phoneInput.value;
     const message = messageInput?.value;
     const listCartItem = getData(keyLocalStorageItemCart);
-    const cartSummary = getCartSummary(listCartItem);
-    const totalPrice = cartSummary.get("total_price");
-    const itemNumbers = cartSummary.get("item_numbers");
-    const totalQuantity = cartSummary.get("total_quantity");
-    try {
-      const [provinceName, districtName, wardName] = await getLocation(
-        selectProvinceElement.value,
-        selectDistrictElement.value,
-        selectWardElement.value
-      );
-      const address = `${addressInput.value}/${wardName}-${districtName}-${provinceName}`;
-
-      const bill = {
-        id,
-        date: dateString,
-        address,
-        total_price: totalPrice,
-        item_numbers: itemNumbers,
-        total_quantity: totalQuantity,
-        items: listCartItem,
-        customer: {
-          name,
-          email,
-          phone: phoneNumber,
-        },
-      };
-      if (message) {
-        bill.message = message;
-      }
-      handleAddBill(bill);
-
-    } catch (error) {
-      
+    const getTotalPrice = getTotal(listCartItem, "price");
+    const getItemNumbers = getTotal(listCartItem);
+    const getTotalQuantity = getTotal(listCartItem, "buy_quantity");
+    const bill = {
+      id,
+      date: dateString,
+      address,
+      total_price: getTotalPrice(),
+      item_numbers: getItemNumbers(),
+      total_quantity: getTotalQuantity(),
+      items: listCartItem,
+      customer: {
+        name,
+        email,
+        phone: phoneNumber,
+      },
+    };
+    if (message) {
+      bill.message = message;
     }
+    handleAddBill(bill);
+  };
+
+  const trySubmit = async () => {
+    submitBtnElement.textContent = "Sending...";
+    submitBtnElement.disabled = true;
+    getLocation(
+      {
+        provinceId: selectProvinceElement.value,
+        districtId: selectDistrictElement.value,
+        wardId: selectWardElement.value,
+      },
+      handleSubmit,
+      (error) => console.error(error)
+    );
   };
 
   const closeFormDialog = () => {
     formDialog.remove();
   };
 
-  (async () => {
-    try {
-      const provinces = await getProvinces();
-      selectProvinceElement.innerHTML = `<option value="0">--Chọn Tỉnh/Thành phố--</option>`;
-      provinces.forEach((province) => {
-        const option = createOptionElement(province.name, province.code);
-        selectProvinceElement.appendChild(option);
-      });
-    } catch (error) {
-      errorStatusElement.textContent = error;
-    }
-  })();
+  getProvinces(handleProvinces, (error) => console.error(error));
 
   selectProvinceElement.addEventListener("change", handleProvinceChange);
   selectDistrictElement.addEventListener("change", handleDistrictChange);
@@ -280,7 +274,7 @@ const createFormDialog = (handleAddBill) => {
     e.preventDefault();
     const check = validateInputs();
     if (check === "pass") {
-      handleSubmit();
+      trySubmit();
     }
   });
 

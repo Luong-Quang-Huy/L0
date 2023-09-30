@@ -1,21 +1,14 @@
-import { keyLocalStorageListSP, keyLocalStorageItemCart, storeData, getData } from "../storageOperation.js";
-import { getCartSummary } from "../utilities.js";
+import { keyLocalStorageListSP, keyLocalStorageItemCart, storeData, getData, setupData} from "../storageOperation.js";
+import { getTotal } from "../utilities.js";
 import { createNotification, createNotificationSection } from "../notification/notifiction.js";
 
-if(!localStorage.getItem(keyLocalStorageListSP)){
-  storeData(keyLocalStorageListSP);
-}
-
-if(!localStorage.getItem(keyLocalStorageItemCart)){
-  storeData(keyLocalStorageItemCart);
-}
-
+setupData();
 const listSP = getData(keyLocalStorageListSP);
 const listItemCart = getData(keyLocalStorageItemCart);
 const productsCountElement = document.querySelector('.cart__products-count');
 const shelfElement = document.querySelector('.shelf');
-const cartSummary = getCartSummary(listItemCart);
-productsCountElement.textContent = cartSummary.get("item_numbers");
+const getItemNumbersInCart = getTotal(listItemCart);
+productsCountElement.textContent = getItemNumbersInCart();
 const notificationSection = createNotificationSection();
 shelfElement.appendChild(notificationSection);
 
@@ -29,9 +22,8 @@ const addAProductToCart = (content, type="success") => {
     notification.remove();
   }, 2300);
   storeData(keyLocalStorageItemCart, listItemCart);
-  productsCountElement.textContent = getCartSummary(
-    getData(keyLocalStorageItemCart)
-  ).get("item_numbers");
+  const getItemNumbersInCart = getTotal(getData(keyLocalStorageItemCart));
+  productsCountElement.textContent = getItemNumbersInCart();
 }
 
 const addSP = (id, buy_quantity = 1) => {

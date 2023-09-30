@@ -1,97 +1,117 @@
 import { provincesAPI_URL as baseURL } from "./const.js";
 
-const getProvinces = async () => {
-  try {
-    const result = fetch(baseURL + "/p");
-    const response = await result;
-    if (response.ok) {
-      const provinces = await response.json();
-      return provinces;
-    } else {
-      throw Error(`Error: ${response.status}`);
+const getProvinces = (handleProvinces, handleError) => {
+  (async () => {
+    try {
+      const result = fetch(baseURL + "/p");
+      const response = await result;
+      if (response.ok) {
+        const provinces = await response.json();
+        handleProvinces(provinces);
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      handleError(error);
     }
-  } catch (error) {
-    console.error(error);
-  }
+  })();
 };
 
-const getDistrictsByProvinceID = async (provinceID) => {
-  try {
-    const result = fetch(baseURL + "/d");
-    const response = await result;
-    if (response.ok) {
-      const districts = await response.json();
-      return districts.filter(
-        (district) => district["province_code"] === provinceID
-      );
-    } else {
-      throw Error(`Error: ${response.status}`);
+const getDistrictsByProvinceID = (provinceId, handleDisctricts, handleError) => {
+  (async () => {
+    try {
+      const result = fetch(baseURL + "/d");
+      const response = await result;
+      if (response.ok) {
+        const districts = await response.json();
+        const targetDistricts = districts.filter(
+          (district) => district["province_code"] === provinceId
+        );
+        handleDisctricts(targetDistricts);
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      handleError(error);
     }
-  } catch (error) {
-    console.error(error);
-  }
+  })();
 };
 
-const getWardsByDistrictID = async (districtID) => {
-  try {
-    const result = fetch(baseURL + "/w");
-    const response = await result;
-    if (response.ok) {
-      const wards = await response.json();
-      return wards.filter((ward) => ward["district_code"] === districtID);
-    } else {
-      throw Error(`Error: ${response.status}`);
+const getWardsByDistrictID = async (districtId, handleWards, handleError) => {
+  (async () => {
+    try {
+      const result = fetch(baseURL + "/w");
+      const response = await result;
+      if (response.ok) {
+        const wards = await response.json();
+        const targetWards = wards.filter(
+          (ward) => ward["district_code"] === districtId
+        );
+        handleWards(targetWards);
+      } else {
+        throw Error(`Error: ${response.status}`);
+      }
+    } catch (error) {
+      handleError(error);
     }
-  } catch (error) {
-    console.error(error);
-  }
+  })();
 };
 
-const getLocation = async (provinceId, districtId, wardId) => {
-  const getProvinceName = async () => {
+const getProvinceName = async (provinceId, handleError) => {
     try {
       const result = fetch(`${baseURL}/p/${provinceId}`);
       const res = await result;
       const province = await res.json();
       return province.name;
-    } catch (error) {
-      return error;
+    }catch(error){
+      handleError(error);
     }
   };
 
-  const getDistrictName = async () => {
+  const getDistrictName = async (districtId, handleError) => {
     try {
       const result = fetch(`${baseURL}/d/${districtId}`);
       const res = await result;
       const district = await res.json();
       return district.name;
-    } catch (error) {
-      return error;
+    }catch(error){
+      handleError(error);
     }
   };
 
-  const getWardName = async () => {
+  const getWardName = async (wardId, handleError) => {
     try {
       const result = fetch(`${baseURL}/w/${wardId}`);
       const res = await result;
       const ward = await res.json();
       return ward.name;
-    } catch (error) {
-      return error;
+    }catch(error){
+      handleError(error);
     }
   };
 
-  try {
-    const result = Promise.all([
-      getProvinceName(),
-      getDistrictName(),
-      getWardName(),
-    ]);
-    const location = await result;
-    return location;
-  } catch (error) {
-    console.error(error);
-  }
+const getLocation = (
+  {provinceId, districtId, wardId},
+  handleLocation,
+  handleError) => {
+  (async () => {
+    try {
+      const result = Promise.all([
+        getProvinceName(provinceId, handleError),
+        getDistrictName(districtId, handleError),
+        getWardName(wardId, handleError),
+      ]);
+      const location = await result;
+      handleLocation(location);
+    } catch (error) {
+      console.error(error);
+    }
+  })();
 };
 
-export {getProvinces , getDistrictsByProvinceID, getWardsByDistrictID, getLocation}
+export {
+  getProvinces,
+  getDistrictsByProvinceID,
+  getWardsByDistrictID,
+  getLocation,
+};

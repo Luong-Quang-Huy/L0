@@ -1,32 +1,32 @@
 {
   "bills": [
     {
-      "id": "vxgehlasds",
-      "date": "06:58:46 23/9/2023",
-      "address": "69/Phường Tương Giang-Thành phố Từ Sơn-Tỉnh Bắc Ninh",
-      "total_price": 640,
+      "id": "norolqcigh",
+      "date": "09:24:24 30/9/2023",
+      "address": "69/Xã Nhạn Môn-Huyện Pác Nặm-Tỉnh Bắc Kạn",
+      "total_price": 660,
       "item_numbers": 3,
-      "total_quantity": 5,
+      "total_quantity": 6,
       "items": [
         {
           "id": 1,
           "buy_quantity": 2
         },
         {
-          "id": 3,
+          "id": 2,
           "buy_quantity": 2
         },
         {
-          "id": 9,
-          "buy_quantity": 1
+          "id": 3,
+          "buy_quantity": 2
         }
       ],
       "customer": {
-        "name": "Luong Quang Huy",
-        "email": "quanghuy060699@gmail.com",
-        "phone": "0389695744"
+        "name": "Phan Kim Liên",
+        "email": "phankimlien6969@yahoo.com",
+        "phone": "0369696969"
       },
-      "message": "concac"
+      "message": "69"
     }
   ]
 }
