@@ -117,8 +117,5 @@ const fakeData = [
     quantity: 14,
   },
 ];
-
-const vietnameseNameRegex =
-  /^[A-ZÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆĐÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴ][a-zàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệđìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳỵỷỹ]*$/;
-
-export { keyLocalStorageListSP, keyLocalStorageItemCart, billsUrl, provincesAPI_URL, fakeData, vietnameseNameRegex};
+ 
+export { keyLocalStorageListSP, keyLocalStorageItemCart, billsUrl, provincesAPI_URL, fakeData };

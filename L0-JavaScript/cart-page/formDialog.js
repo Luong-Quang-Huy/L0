@@ -1,6 +1,5 @@
 import { keyLocalStorageItemCart, getData } from "../storageOperation.js";
-import { getTotal, randomId } from "../utilities.js";
-import { vietnameseNameRegex } from "../const.js";
+import { getTotal, generateRandomId } from "../utilities.js";
 import {
   getProvinces,
   getDistrictsByProvinceID,
@@ -30,7 +29,8 @@ const createFormDialog = (handleAddBill) => {
     labelText: "Họ",
     type: "input",
     placeHolder: "Họ",
-    regex: vietnameseNameRegex,
+    regex:
+      /^[A-ZÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆĐÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴ][a-zàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệđìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳỵỷỹ]*$/,
     invalidText: "Họ chứa chữ cái, chỉ có một từ, bắt đầu bằng chữa in hoa",
     isRequired: true,
   });
@@ -42,7 +42,8 @@ const createFormDialog = (handleAddBill) => {
     labelText: "Tên",
     type: "name-input",
     placeHolder: "Tên",
-    regex: vietnameseNameRegex,
+    regex:
+      /^[A-ZÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆĐÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴ][a-zàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệđìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳỵỷỹ]*$/,
     invalidText:
       "Tên chỉ chứa chữ cái,có thể có nhiều từ, mỗi từ bắt đầu bằng chữa in hoa",
     isRequired: true,
@@ -72,8 +73,8 @@ const createFormDialog = (handleAddBill) => {
   const [addressValidateElement, checkAddress] = createInputValidate({
     type: "input",
     placeHolder: "Số nhà",
-    regex: /^.{1,12}$/,
-    invalidText: "Số nhà không được nhiều quá 12 kí tự",
+    regex: /^.{1,16}$/,
+    invalidText: "Số nhà không được nhiều quá 16 kí tự",
     isRequired: true,
   });
   addressValidateElement.classList.add("buy-form__input");
@@ -170,6 +171,11 @@ const createFormDialog = (handleAddBill) => {
     });
   };
 
+  const handleRequestProvincesError = (error) => {
+    console.error(error);
+    alert(`${error} - lỗi API vui lòng thử lại sau`);
+  };
+
   const handleProvinceChange = (e) => {
     const id = Number(e.target.value);
     if (id) {
@@ -177,9 +183,11 @@ const createFormDialog = (handleAddBill) => {
       selectWardElement.disabled = true;
       selectDistrictElement.innerHTML = `<option value="-1">Loading...<option>`;
       selectWardElement.innerHTML = `<option value="-1">Loading...<option>`;
-      getDistrictsByProvinceID(id, handleDistricts, (error) =>
-        console.error(error)
-      );
+      getDistrictsByProvinceID(id, handleDistricts, (error) => {
+        handleRequestProvincesError(error);
+        resetDistrictValue();
+        resetWardValue();
+      });
     } else {
       resetDistrictValue();
       resetWardValue();
@@ -191,7 +199,10 @@ const createFormDialog = (handleAddBill) => {
     if (id) {
       selectWardElement.disabled = true;
       selectWardElement.innerHTML = `<option value="-1">Loading...<option>`;
-      getWardsByDistrictID(id, handleWards, (error) => console.error(error));
+      getWardsByDistrictID(id, handleWards, (error) => {
+        handleProvinceChange(error);
+        resetWardValue();
+      });
     } else {
       resetWardValue();
     }
@@ -214,7 +225,7 @@ const createFormDialog = (handleAddBill) => {
 
   const handleSubmit = (location) => {
     const [provinceName, districtName, wardName] = location;
-    const id = randomId(10);
+    const id = generateRandomId(10);
     const now = new Date();
     const dateString = now.toLocaleString();
     const address = `${addressInput.value}/${wardName}-${districtName}-${provinceName}`;
@@ -264,7 +275,10 @@ const createFormDialog = (handleAddBill) => {
     formDialog.remove();
   };
 
-  getProvinces(handleProvinces, (error) => console.error(error));
+  getProvinces(handleProvinces, (error) => {
+    console.error(error);
+    alert(error);
+  });
 
   selectProvinceElement.addEventListener("change", handleProvinceChange);
   selectDistrictElement.addEventListener("change", handleDistrictChange);

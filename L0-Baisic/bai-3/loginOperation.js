@@ -1,9 +1,15 @@
-export const storeLoginData = (username, password) => {
+const storeLoginData = (username, password) => {
     sessionStorage.setItem("loginData", JSON.stringify({
       username, 
       password
     }));
 }
+
+(() => {
+  if (!sessionStorage.getItem("loginData")) {
+    storeLoginData("admin", "admin");
+  }
+})();
 
 const getLoginData = () => {
   if(sessionStorage.getItem("loginData")){
@@ -11,7 +17,7 @@ const getLoginData = () => {
   }
 }
 
-export const tryLogin = (username, password) => {
+const tryLogin = (username, password) => {
     let login;
     if (login = getLoginData()){
       if (username !== login.username || password !== login.password) {
@@ -26,7 +32,7 @@ export const tryLogin = (username, password) => {
     }
 };
 
-export const tryChangePassword = (currentPassword, newPassword) => {
+const tryChangePassword = (currentPassword, newPassword) => {
  let login;
  if(login = getLoginData()){
    if (currentPassword !== login.password) {

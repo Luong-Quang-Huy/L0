@@ -1,10 +1,3 @@
-import { tryChangePassword } from "../loginOperation.js";
-import { storeLoginData } from "../loginOperation.js";
-
-if (!sessionStorage.getItem("loginData")) {
-  storeLoginData("admin", "admin");
-}
-
 const exitBtn = document.querySelector(".modal__btn-exit");
 const currentPassword = document.querySelector(
   ".modal__input--current-password > input"

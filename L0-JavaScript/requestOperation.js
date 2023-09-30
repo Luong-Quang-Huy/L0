@@ -10,7 +10,7 @@ const getBills = (handleBills, handleError) => {
             handleBills(bills);
         }
     }catch(error){
-        handleError();
+        handleError(error);
     }
 })();
 };
@@ -32,8 +32,7 @@ const addBill = (bill, handleSuccess, handleError) => {
             throw Error(`Error: ${response.status}`);
           }
         } catch (error) {
-          alert(error);
-          handleError();
+          handleError(error);
         }
     })();
 }
@@ -49,7 +48,7 @@ const deleteBill = (id, handleSuccess, handleError) => {
           throw Error(`Error: ${response.status}`);
         }
     }catch(error){
-        handleError();
+        handleError(error);
     }
     })();
 }

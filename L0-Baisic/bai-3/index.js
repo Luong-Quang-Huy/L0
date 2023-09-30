@@ -1,9 +1,3 @@
-import { storeLoginData} from "./loginOperation.js";
-
-if(!sessionStorage.getItem("loginData")){
-    storeLoginData("admin","admin");
-}
-
 const signInBtn = document.querySelector('.sign-in-button');
 
 (() => {

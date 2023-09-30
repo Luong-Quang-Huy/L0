@@ -37,12 +37,12 @@ const randomAlphabeticalCharacter = () => {
    return alphabeticCharacter;
 };
 
-const randomId = (numberOfCharacters) => {
+const generateRandomId = (numberOfCharacters) => {
   if(numberOfCharacters === 1){
     return randomAlphabeticalCharacter();
   }else{
-    return randomAlphabeticalCharacter() + randomId(--numberOfCharacters);
+    return randomAlphabeticalCharacter() + generateRandomId(--numberOfCharacters);
   }
 };
 
-export {getTotal, randomId}
+export { getTotal, generateRandomId }
