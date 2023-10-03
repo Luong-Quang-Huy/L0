@@ -117,5 +117,11 @@ const fakeData = [
     quantity: 14,
   },
 ];
- 
-export { keyLocalStorageListSP, keyLocalStorageItemCart, billsUrl, provincesAPI_URL, fakeData };
+
+export {
+  keyLocalStorageListSP,
+  keyLocalStorageItemCart,
+  billsUrl,
+  provincesAPI_URL,
+  fakeData,
+};

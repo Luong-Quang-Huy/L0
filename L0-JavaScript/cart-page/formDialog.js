@@ -1,13 +1,13 @@
-import { keyLocalStorageItemCart, getData } from "../storageOperation.js";
-import { getTotal, generateRandomId } from "../utilities.js";
-import {
+import createInputValidate from "../input-validate/inputValidate.js";
+
+const { keyLocalStorageItemCart, getData } = window.localStorageOperation;
+const { getTotal, generateRandomId } = window.myLibrary;
+const {
   getProvinces,
   getDistrictsByProvinceID,
   getWardsByDistrictID,
   getLocation,
-} from "../provincesOpenAPI.js";
-import createInputValidate from "../input-validate/inputValidate.js";
-
+} = window.provincesAPI;
 const createFormDialog = (handleAddBill) => {
   const formDialog = document.createElement("section");
   formDialog.classList.add("cart__buy-window");
@@ -45,7 +45,7 @@ const createFormDialog = (handleAddBill) => {
     regex:
       /^[A-ZÀÁẢÃẠÂẦẤẨẪẬĂẰẮẲẴẶÈÉẺẼẸÊỀẾỂỄỆĐÌÍỈĨỊÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢÙÚỦŨỤƯỪỨỬỮỰỲÝỶỸỴ][a-zàáảãạâầấẩẫậăằắẳẵặèéẻẽẹêềếểễệđìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳỵỷỹ]*$/,
     invalidText:
-      "Tên chỉ chứa chữ cái,có thể có nhiều từ, mỗi từ bắt đầu bằng chữa in hoa",
+      "Tên chỉ chứa chữ cái, có thể có nhiều từ, mỗi từ bắt đầu bằng chữa in hoa",
     isRequired: true,
   });
   firstNameValidateElement.classList.add(

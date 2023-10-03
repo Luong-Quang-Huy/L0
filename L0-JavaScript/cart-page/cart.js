@@ -1,26 +1,22 @@
-import {
+import createFormDialog from "./formDialog.js";
+import { createDeleteNotification } from "../delete-notification/deleteNotification.js";
+
+const {
   keyLocalStorageListSP,
   keyLocalStorageItemCart,
   storeData,
   getData,
   setupData,
   removeItemsInStore,
-} from "../storageOperation.js";
-import { getTotal } from "../utilities.js";
-import createFormDialog from "./formDialog.js";
-import { addBill } from "../requestOperation.js";
-import { createDeleteNotification } from "../delete-notification/deleteNotification.js";
-
+} = window.localStorageOperation;
+const { getTotal } = window.myLibrary;
+const { addBill } = window.jsonServerAPI;
 setupData();
 const listSP = getData(keyLocalStorageListSP);
-const listItemCart = getData(keyLocalStorageItemCart);
 const productsCountElement = document.querySelector(".cart__products-count");
-const getItemNumbersInCart = getTotal(listItemCart);
-const getCartTotalPrice = getTotal(listItemCart, "price");
-productsCountElement.textContent = getItemNumbersInCart();
 const mainElement = document.body.querySelector(".main");
 
-(() => {
+const createBillNotifying = () => {
   const searchPrams = new URLSearchParams(window.location.search);
   if (searchPrams.has("buy-success")) {
     const isSuccess = searchPrams.get("buy-success");
@@ -51,54 +47,63 @@ const mainElement = document.body.querySelector(".main");
 
     mainElement.appendChild(successNotificationElement);
   }
-})();
+};
 
 const removeItemFromCart = (id) => {
+  const listItemCart = getData(keyLocalStorageItemCart);
   storeData(
     keyLocalStorageItemCart,
     listItemCart.filter((item) => item.id !== id)
   );
 };
 
-const handleDecreaseProductQuantity = (id, name, buyQuantity) => {
+const handleDecreaseProductQuantity = (
+  { id, name, buyQuantity },
+  reRenderCart
+) => {
   if (buyQuantity <= 1) {
     const deleteNotification = createDeleteNotification(
       "Thông báo",
       `Giảm số lượng sản phẩm "${name}" xuống 0 sẽ xóa sản phẩm này khỏi giỏ hàng`,
       () => {
         removeItemFromCart(id);
-        window.location.reload();
+        reRenderCart();
       }
     );
     document.body.appendChild(deleteNotification);
   } else {
+    const listItemCart = getData(keyLocalStorageItemCart);
     listItemCart.find((item) => item.id === id)["buy_quantity"] -= 1;
     storeData(keyLocalStorageItemCart, listItemCart);
-    window.location.reload();
+    reRenderCart();
   }
 };
 
-const handleIncreaseProductQuantity = (id, buyQuantity, quantityInStore) => {
+const handleIncreaseProductQuantity = (
+  { id, buyQuantity, quantityInStore },
+  reRenderCart
+) => {
   if (buyQuantity < quantityInStore) {
+    const listItemCart = getData(keyLocalStorageItemCart);
     listItemCart.find((item) => item.id === id)["buy_quantity"] += 1;
     storeData(keyLocalStorageItemCart, listItemCart);
-    window.location.reload();
+    reRenderCart();
   }
 };
 
-const handleClearProduct = (id, name) => {
+const handleClearProduct = ({ id, name }, reRenderCart) => {
   const deleteNotification = createDeleteNotification(
     "Thông báo",
     `Thao tác này sẽ xóa sản phẩm "${name}" khỏi giỏ hàng`,
     () => {
       removeItemFromCart(id);
-      window.location.reload();
+      reRenderCart();
     }
   );
   document.body.append(deleteNotification);
 };
 
-const getByIdSP = (id, buyQuantity) => {
+const getByIdSP = (id, buyQuantity, reRenderCart) => {
   const { name, photo, price, quantity } = listSP.find(
     (shoesObj) => shoesObj.id === id
   );
@@ -138,22 +143,26 @@ const getByIdSP = (id, buyQuantity) => {
   const clearBtnElement = productElement.querySelector(".product__clear-btn");
 
   decreaseBtnElement.addEventListener("click", () => {
-    handleDecreaseProductQuantity(id, name, buyQuantity);
+    handleDecreaseProductQuantity({ id, name, buyQuantity }, reRenderCart);
   });
 
   increaseBtnElement.addEventListener("click", () => {
-    handleIncreaseProductQuantity(id, buyQuantity, quantity);
+    handleIncreaseProductQuantity(
+      { id, buyQuantity, quantityInStore: quantity },
+      reRenderCart
+    );
   });
 
   clearBtnElement.addEventListener("click", () => {
-    handleClearProduct(id, name);
+    handleClearProduct({ id, name }, reRenderCart);
   });
 
   return productElement;
 };
 
 const handleAddBill = (bill) => {
-  addBill(bill,
+  addBill(
+    bill,
     () => {
       removeItemsInStore(bill.items);
       storeData(keyLocalStorageItemCart, []);
@@ -170,6 +179,10 @@ const handleAddBill = (bill) => {
 };
 
 const renderCart = () => {
+  const listItemCart = getData(keyLocalStorageItemCart);
+  const itemNumbersInCart = getTotal(listItemCart);
+  productsCountElement.textContent = itemNumbersInCart();
+  mainElement.innerHTML = "";
   if (listItemCart.length === 0) {
     const cartEmptyElement = document.createElement("section");
     cartEmptyElement.classList.add("cart-empty");
@@ -178,6 +191,7 @@ const renderCart = () => {
             <i class="bi bi-arrow-left-short"></i> Back to Shopping
         </a>`;
     mainElement.appendChild(cartEmptyElement);
+    createBillNotifying();
   } else if (listItemCart.length > 0) {
     const cartElement = document.createElement("section");
     cartElement.classList.add("cart");
@@ -200,11 +214,15 @@ const renderCart = () => {
             <i class="bi bi-arrow-left-short"></i> Back to Shopping
         </a>`;
     mainElement.append(cartElement);
-
+    createBillNotifying();
     const productsElement = document.querySelector(".products");
     const totalElement = document.querySelector(".cart__total");
     const buyBtnElement = document.querySelector(".cart__buy-btn");
-    totalElement.textContent = getCartTotalPrice().toFixed(2);
+    const cartTotalPrice = getTotal(listItemCart, "price");
+    totalElement.textContent = cartTotalPrice().toFixed(2);
+    listItemCart.forEach(({ id, buy_quantity: buyQuantity }) => {
+      productsElement.append(getByIdSP(id, buyQuantity, renderCart));
+    });
 
     const openFormDialog = () => {
       const formDialogElement = createFormDialog(handleAddBill);
@@ -212,10 +230,6 @@ const renderCart = () => {
     };
 
     buyBtnElement.addEventListener("click", openFormDialog);
-
-    listItemCart.forEach(({ id, buy_quantity: buyQuantity }) => {
-      productsElement.append(getByIdSP(id, buyQuantity));
-    });
   }
 };
 

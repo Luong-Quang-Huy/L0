@@ -1,13 +1,16 @@
-import {
+import { createDeleteNotification } from "../delete-notification/deleteNotification.js";
+
+const {
   keyLocalStorageItemCart,
   getData,
   getProductInfo,
   returnItemsToStore,
-} from "../storageOperation.js";
-import { getTotal } from "../utilities.js";
-import { getBills, deleteBill } from "../requestOperation.js";
-import { createDeleteNotification } from "../delete-notification/deleteNotification.js";
+  setupData,
+} = window.localStorageOperation;
+const { getTotal } = window.myLibrary;
+const { getBills, deleteBill } = window.jsonServerAPI;
 
+setupData();
 const itemCountElement = document.body.querySelector(".cart__products-count");
 const getItemNumbersInCart = getTotal(getData(keyLocalStorageItemCart));
 itemCountElement.textContent = getItemNumbersInCart();
@@ -60,18 +63,19 @@ const createNotification = (notificationType) => {
   return notificationWindow;
 };
 
-(() => {
+const returnBillNotifying = () => {
   const searchParams = new URLSearchParams(window.location.search);
   if (searchParams.has("return-success")) {
-    if (searchParams.get("return-success") === "true") {
+    const returnResult = searchParams.get("return-success");
+    if (returnResult === "success") {
       const notification = createNotification("success");
       main.appendChild(notification);
-    } else if (searchParams.get("return-success") === "false") {
+    } else if (returnResult === "fail") {
       const notification = createNotification("fail");
       main.appendChild(notification);
     }
   }
-})();
+};
 
 const createItemElement = (id, buyQuantity) => {
   const { photo, name, price } = getProductInfo(id);
@@ -138,17 +142,16 @@ const createBillElement = (bill) => {
   const handleDeleteBill = () => {
     returnBtn.textContent = "processing...";
     returnBtn.disable = true;
+    const searchParams = new URLSearchParams();
     deleteBill(
       billId,
       () => {
         returnItemsToStore(listItem);
-        const searchParams = new URLSearchParams();
-        searchParams.append("return-success", true);
+        searchParams.append("return-success", "success");
         window.location.replace(`./bills.html?${searchParams.toString()}`);
       },
       () => {
-        const searchParams = new URLSearchParams();
-        searchParams.append("return-success", false);
+        searchParams.append("return-success", "fail");
         window.location.replace(`./bills.html?${searchParams.toString()}`);
       }
     );
@@ -169,6 +172,7 @@ const createBillElement = (bill) => {
 
 const handleBills = (bills) => {
   if (bills.length === 0) {
+    returnBillNotifying();
     loadingSTitle.textContent = "Bạn không có đơn hàng nào";
   } else {
     main.innerHTML = `<section class="bills">
@@ -190,6 +194,7 @@ const handleBills = (bills) => {
         <a href="../home-page/home.html" class="bills__back-to-shopping" target="_self">
         <iclass="bi bi-arrow-left-short"></i> Back to Shopping</a>
     </section>`;
+    returnBillNotifying();
     const billsTable = main.querySelector(".bills__bill-table");
     bills.forEach((bill) => {
       const billElement = createBillElement(bill);
@@ -200,6 +205,7 @@ const handleBills = (bills) => {
 
 const renderBills = () => {
   getBills(handleBills, () => {
+    returnBillNotifying();
     loadingSTitle.classList.add("bills-loading__status--fail");
     loadingSTitle.textContent = "Máy chủ không phản hồi";
   });
