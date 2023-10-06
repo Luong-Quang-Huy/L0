@@ -1,6 +1,6 @@
 const keyLocalStorageListSP = "DANHSACHSP";
 const keyLocalStorageItemCart = "DANHSACHITEMCART";
-const billsUrl = "http://localhost:3000/bills";
+const bills_URL = "http://localhost:3000/bills";
 const provincesAPI_URL = "https://provinces.open-api.vn/api";
 
 const fakeData = [
@@ -121,7 +121,7 @@ const fakeData = [
 export {
   keyLocalStorageListSP,
   keyLocalStorageItemCart,
-  billsUrl,
+  bills_URL,
   provincesAPI_URL,
   fakeData,
 };

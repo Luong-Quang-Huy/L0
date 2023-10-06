@@ -1,4 +1,5 @@
 @import url("../share-styles.css");
+@import url("../page-notification/page-notification.css");
 @import url("../delete-notification/delete-notification.css");
 @import url("../input-validate/input-validate.css");
 .cart {
@@ -235,78 +236,4 @@
 
 .buy-form__submit-btn:hover {
   background-color: #3399ff;
-}
-
-.cart__buy-success-wrapper {
-  background-color: rgba(0, 0, 0, 0.4);
-  position: fixed;
-  inset: 0;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.cart__buy-success {
-  max-width: 768px;
-  background-color: whitesmoke;
-  border-radius: 8px;
-  box-shadow: 3px 4px 12px rgba(0, 0, 0, 0.4);
-  padding: 2em;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  top: 0;
-  gap: 1.5em;
-  animation: cart__buy-success--appear 0.5s ease-out;
-  transition-property: transform, top;
-  transition-duration: 0.5s;
-  transition-timing-function: ease-in;
-}
-
-.cart__buy-success--disappear{
-    transform: scale(0);
-    top: -50vh;
-}
-
-@keyframes cart__buy-success--appear {
-  from {
-    transform: scale(0);
-    top: -50vh;
-  }
-  to {
-    transform: scale(1);
-    top: 0;
-  }
-}
-
-.cart-buy-success__title {
-  font-size: xx-large;
-  color: #00ff00;
-}
-
-.cart-buy-success__title--error{
-  color: red;
-}
-
-.cart-buy-success__notification {
-  font-size: large;
-}
-
-.cart-buy-success__confirm-btn {
-  padding: 8px 16px;
-  border-radius: 4px;
-  font-size: larger;
-  color: white;
-  background-color: #00ff00;
-}
-
-.cart-buy-success__confirm-btn--error{
-  background-color: purple;
-}
-
-.cart-buy-success__confirm-btn:hover {
-  background-color: greenyellow;
 }

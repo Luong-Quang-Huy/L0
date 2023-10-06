@@ -1,67 +1,53 @@
 import createFormDialog from "./formDialog.js";
+import { pageGotParam, reloadPageWithParam } from "../page-notification/pageNotification.js";
 import { createDeleteNotification } from "../delete-notification/deleteNotification.js";
+import { keyLocalStorageListSP, keyLocalStorageItemCart, bills_URL } from "../const.js";
 
 const {
-  keyLocalStorageListSP,
-  keyLocalStorageItemCart,
   storeData,
   getData,
   setupData,
   removeItemsInStore,
 } = window.localStorageOperation;
 const { getTotal } = window.myLibrary;
-const { addBill } = window.jsonServerAPI;
+
 setupData();
+
 const listSP = getData(keyLocalStorageListSP);
 const productsCountElement = document.querySelector(".cart__products-count");
 const mainElement = document.body.querySelector(".main");
 
-const createBillNotifying = () => {
-  const searchPrams = new URLSearchParams(window.location.search);
-  if (searchPrams.has("buy-success")) {
-    const isSuccess = searchPrams.get("buy-success");
-    const successNotificationElement = document.createElement("div");
-    successNotificationElement.classList.add("cart__buy-success-wrapper");
-    successNotificationElement.innerHTML = `<div class="cart__buy-success">
-        ${
-          isSuccess === "success"
-            ? `<h2 class="cart-buy-success__title">Đặt hàng thành công!</h2>
-        <p class="cart-buy-success__notification">Hàng đang được chuyển đến cho bạn từ nhà phân phối gần nhất.</p>
-        <button class="cart-buy-success__confirm-btn">OK</button>`
-            : `<h2 class="cart-buy-success__title cart-buy-success__title--error">Đặt hàng thất bại!</h2>
-        <p class="cart-buy-success__notification">Lỗi máy chủ, vui lòng thử lại sau.</p>
-        <button class="cart-buy-success__confirm-btn cart-buy-success__confirm-btn--error">OK</button>`
-        }
-      </div>`;
-    const confirmBtn = successNotificationElement.querySelector(
-      ".cart-buy-success__confirm-btn"
-    );
-    confirmBtn.addEventListener("click", () => {
-      successNotificationElement
-        .querySelector(".cart__buy-success")
-        .classList.add("cart__buy-success--disappear");
-      setTimeout(() => {
-        window.location.replace("./cart.html");
-      }, 500);
-    });
+const handlePageGotParams = () => {
 
-    mainElement.appendChild(successNotificationElement);
-  }
-};
+  pageGotParam(mainElement, "buy-products", {
+    successTitle: "Đặt hàng thành công!",
+    successDescription: "Giao dịch hoàn tất, vui lòng kiểm tra hóa đơn.",
+    failTitle: "Đặt không thành công!",
+    failDescription: "Lỗi máy chủ, vui lòng thử lại sau.",
+  });
+
+}
 
 const removeItemFromCart = (id) => {
+
   const listItemCart = getData(keyLocalStorageItemCart);
+
   storeData(
     keyLocalStorageItemCart,
     listItemCart.filter((item) => item.id !== id)
   );
+
 };
+
+const clearCart = () => {
+  storeData(keyLocalStorageItemCart, []);
+}
 
 const handleDecreaseProductQuantity = (
   { id, name, buyQuantity },
-  reRenderCart
-) => {
+  reRenderCart) => {
   if (buyQuantity <= 1) {
+
     const deleteNotification = createDeleteNotification(
       "Thông báo",
       `Giảm số lượng sản phẩm "${name}" xuống 0 sẽ xóa sản phẩm này khỏi giỏ hàng`,
@@ -70,28 +56,38 @@ const handleDecreaseProductQuantity = (
         reRenderCart();
       }
     );
+
     document.body.appendChild(deleteNotification);
+
   } else {
+
     const listItemCart = getData(keyLocalStorageItemCart);
     listItemCart.find((item) => item.id === id)["buy_quantity"] -= 1;
+
     storeData(keyLocalStorageItemCart, listItemCart);
+
     reRenderCart();
   }
 };
 
 const handleIncreaseProductQuantity = (
   { id, buyQuantity, quantityInStore },
-  reRenderCart
-) => {
+  reRenderCart) => {
+
   if (buyQuantity < quantityInStore) {
+
     const listItemCart = getData(keyLocalStorageItemCart);
     listItemCart.find((item) => item.id === id)["buy_quantity"] += 1;
+
     storeData(keyLocalStorageItemCart, listItemCart);
+
     reRenderCart();
+
   }
 };
 
 const handleClearProduct = ({ id, name }, reRenderCart) => {
+
   const deleteNotification = createDeleteNotification(
     "Thông báo",
     `Thao tác này sẽ xóa sản phẩm "${name}" khỏi giỏ hàng`,
@@ -100,14 +96,19 @@ const handleClearProduct = ({ id, name }, reRenderCart) => {
       reRenderCart();
     }
   );
+
   document.body.append(deleteNotification);
+
 };
 
 const getByIdSP = (id, buyQuantity, reRenderCart) => {
+
   const { name, photo, price, quantity } = listSP.find(
     (shoesObj) => shoesObj.id === id
   );
+
   const total = price * buyQuantity;
+
   const productElement = document.createElement("tr");
   productElement.classList.add("product");
   productElement.innerHTML = `<td>
@@ -149,8 +150,7 @@ const getByIdSP = (id, buyQuantity, reRenderCart) => {
   increaseBtnElement.addEventListener("click", () => {
     handleIncreaseProductQuantity(
       { id, buyQuantity, quantityInStore: quantity },
-      reRenderCart
-    );
+      reRenderCart);
   });
 
   clearBtnElement.addEventListener("click", () => {
@@ -160,39 +160,49 @@ const getByIdSP = (id, buyQuantity, reRenderCart) => {
   return productElement;
 };
 
-const handleAddBill = (bill) => {
-  addBill(
-    bill,
-    () => {
-      removeItemsInStore(bill.items);
-      storeData(keyLocalStorageItemCart, []);
-      const searchPrams = new URLSearchParams();
-      searchPrams.append("buy-success", "success");
-      window.location.replace(`./cart.html?${searchPrams.toString()}`);
-    },
-    () => {
-      const searchPrams = new URLSearchParams();
-      searchPrams.append("buy-success", "fail");
-      window.location.replace(`./cart.html?${searchPrams.toString()}`);
+const handleAddBill = async (bill) => {
+  
+  try{
+    const response = await window.api.postData(bills_URL, bill);
+
+    if(response.ok){
+      const itemsInCart = getData(keyLocalStorageItemCart);
+      removeItemsInStore(itemsInCart);
+      clearCart();
+      reloadPageWithParam("./cart.html", "buy-products", "success");
     }
-  );
+
+  }catch (error){
+    console.error(error);
+    reloadPageWithParam("./cart.html", "buy-products", "fail");
+  }
+
 };
 
 const renderCart = () => {
+
   const listItemCart = getData(keyLocalStorageItemCart);
   const itemNumbersInCart = getTotal(listItemCart);
+
   productsCountElement.textContent = itemNumbersInCart();
+
   mainElement.innerHTML = "";
+
   if (listItemCart.length === 0) {
+
     const cartEmptyElement = document.createElement("section");
     cartEmptyElement.classList.add("cart-empty");
     cartEmptyElement.innerHTML = `<img src="../images/empty-cart.png" alt="" class="cart-empty__photo">
         <a href="../home-page/home.html" class="cart__back-to-shopping" target="_self">
             <i class="bi bi-arrow-left-short"></i> Back to Shopping
         </a>`;
+
     mainElement.appendChild(cartEmptyElement);
-    createBillNotifying();
+
+    handlePageGotParams();
+
   } else if (listItemCart.length > 0) {
+
     const cartElement = document.createElement("section");
     cartElement.classList.add("cart");
     cartElement.innerHTML = `<table class="cart__products-table">
@@ -213,20 +223,28 @@ const renderCart = () => {
         <a href="../home-page/home.html" class="cart__back-to-shopping" target="_self">
             <i class="bi bi-arrow-left-short"></i> Back to Shopping
         </a>`;
+
     mainElement.append(cartElement);
-    createBillNotifying();
+
+    handlePageGotParams();
+
     const productsElement = document.querySelector(".products");
     const totalElement = document.querySelector(".cart__total");
     const buyBtnElement = document.querySelector(".cart__buy-btn");
     const cartTotalPrice = getTotal(listItemCart, "price");
+
     totalElement.textContent = cartTotalPrice().toFixed(2);
+
     listItemCart.forEach(({ id, buy_quantity: buyQuantity }) => {
       productsElement.append(getByIdSP(id, buyQuantity, renderCart));
     });
 
     const openFormDialog = () => {
+
       const formDialogElement = createFormDialog(handleAddBill);
+
       mainElement.appendChild(formDialogElement);
+
     };
 
     buyBtnElement.addEventListener("click", openFormDialog);
