@@ -64,9 +64,18 @@
 
   };
 
+  const generateUniqueId = (existedIds) => {
+    const newId = generateRandomId(10);
+    if(existedIds.includes(newId)){
+      return generateUniqueId(existedIds);
+    }else{
+      return newId;
+    }
+  }
+
   window.myLibrary = {
     getTotal,
-    generateRandomId,
+    generateUniqueId
   };
 
 })();

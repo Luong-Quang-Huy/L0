@@ -26,12 +26,12 @@ const resetAlertStatus = () => {
 
 const validateInput = () => {
   let flag = true;
-  if (username.value.trim() == "") {
+  if (username.value.trim() === "") {
     flag = false;
     username.parentElement.classList.add("modal__input--error");
     usernameStatus.textContent = "Vui lòng nhập đầy đủ thông tin";
   }
-  if (password.value.trim() == "") {
+  if (password.value.trim() === "") {
     flag = false;
     password.parentElement.classList.add("modal__input--error");
     passwordStatus.textContent = "Vui lòng nhập đầy đủ thông tin";

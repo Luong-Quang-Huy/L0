@@ -63,6 +63,34 @@
         "phone": "0344444444"
       },
       "message": "đen"
+    },
+    {
+      "id": "xizszkqouw",
+      "date": "19:41:45 7/10/2023",
+      "address": "69/Phường Tương Giang-Thành phố Từ Sơn-Tỉnh Bắc Ninh",
+      "total_price": 1470,
+      "item_numbers": 3,
+      "total_quantity": 6,
+      "items": [
+        {
+          "id": 16,
+          "buy_quantity": 2
+        },
+        {
+          "id": 15,
+          "buy_quantity": 2
+        },
+        {
+          "id": 14,
+          "buy_quantity": 2
+        }
+      ],
+      "customer": {
+        "name": "Lương Quang Huy",
+        "email": "quanghuy0606999@gmail.com",
+        "phone": "0389695744"
+      },
+      "message": "6969"
     }
   ]
 }

@@ -1,8 +1,8 @@
-import { keyLocalStorageItemCart, provincesAPI_URL} from "../const.js";
+import { keyLocalStorageItemCart, provincesAPI_URL } from "../const.js";
 import createInputValidate from "../input-validate/inputValidate.js";
 
 const { getData } = window.localStorageOperation;
-const { getTotal, generateRandomId } = window.myLibrary;
+const { getTotal } = window.myLibrary;
 
 const createFormDialog = (handleAddBill) => {
 
@@ -283,7 +283,6 @@ const createFormDialog = (handleAddBill) => {
 
   const handleSubmit = (location) => {
 
-    const id = generateRandomId(10);
     const now = new Date();
     const dateString = now.toLocaleString();
     const address = `${addressInput.value}/${location}`;
@@ -296,7 +295,7 @@ const createFormDialog = (handleAddBill) => {
     const getItemNumbers = getTotal(listCartItem);
     const getTotalQuantity = getTotal(listCartItem, "buy_quantity");
     const bill = {
-      id,
+      id: null,
       date: dateString,
       address,
       total_price: getTotalPrice(),

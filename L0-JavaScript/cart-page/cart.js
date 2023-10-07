@@ -9,7 +9,8 @@ const {
   setupData,
   removeItemsInStore,
 } = window.localStorageOperation;
-const { getTotal } = window.myLibrary;
+
+const { getTotal, generateUniqueId } = window.myLibrary;
 
 setupData();
 
@@ -163,6 +164,12 @@ const getByIdSP = (id, buyQuantity, reRenderCart) => {
 const handleAddBill = async (bill) => {
   
   try{
+    const bills = await window.api.getData(bills_URL);
+    const existedIds = bills.map(bill => bill.id);
+    const newId = generateUniqueId(existedIds);
+    
+    bill.id = newId;
+
     const response = await window.api.postData(bills_URL, bill);
 
     if(response.ok){
